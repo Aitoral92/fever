@@ -51,11 +51,11 @@ def main():
                 st.subheader("SEO Title Length:")
                 seot, lenseot = get_seo_title_length(soup)
                 if lenseot < 50:
-                    st.success(f"SEO title '{seot}' is BELOW 50 characters. It is {lenseot} characters long.")
+                    st.error(f"SEO title '{seot}' is BELOW 50 characters. It is {lenseot} characters long.", icon="🚨" )
                 elif lenseot > 60:
-                    st.warning(f"SEO title '{seot}' is OVER 60 characters. It is {lenseot} characters long.")
+                    st.error(f"SEO title '{seot}' is OVER 60 characters. It is {lenseot} characters long.", icon="🚨")
                 else:
-                    st.info(f"SEO title '{seot}' is OPTIMIZED in length. It is {lenseot} characters long. Well done!")
+                    st.info(f"SEO title '{seot}' is OPTIMIZED in length. It is {lenseot} characters long. Well done!", icon="✅")
 
                 st.subheader("Meta Description Length:")
                 metad, len_metad = get_meta_description_length(soup)
