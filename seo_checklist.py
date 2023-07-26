@@ -4,12 +4,13 @@ import requests
 import re
 from bs4 import BeautifulSoup
 from collections import Counter
+import streamlit as st
 
 # %% [markdown]
 # ### URL to Check
 
 # %%
-url = input("Paste the URL: ")
+url = st.text_input("Paste the URL: ")
 
 # %% [markdown]
 # ### H1 length
