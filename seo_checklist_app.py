@@ -4,12 +4,12 @@ from bs4 import BeautifulSoup
 from collections import Counter
 
 def get_seo_title_length(soup):
-    h1 = soup.find_all('h1')[0].text.strip()
-    len_h1 = len(h1)
-    return h1, len_h1
+    seot = soup.find('title')
+    lenseot = len(seot.text)
+    return seot.text, lenseot
 
 def get_meta_description_length(soup):
-    metad = soup.find("meta", property="og:description")
+    metad = soup.find("meta", attrs={"name":"description"})
     len_metad = len(metad["content"]) if metad else 0
     return metad["content"] if metad else "No meta description given", len_metad
 
@@ -49,13 +49,13 @@ def main():
                 soup = BeautifulSoup(get_url.text, "html.parser")
 
                 st.subheader("SEO Title Length:")
-                h1, len_h1 = get_seo_title_length(soup)
-                if len_h1 < 50:
-                    st.success(f"SEO title '{h1}' is BELOW 50 characters. It is {len_h1} characters long.")
-                elif len_h1 > 60:
-                    st.warning(f"SEO title '{h1}' is OVER 60 characters. It is {len_h1} characters long.")
+                seot, lenseot = get_seo_title_length(soup)
+                if lenseot < 50:
+                    st.success(f"SEO title '{seot}' is BELOW 50 characters. It is {lenseot} characters long.")
+                elif lenseot > 60:
+                    st.warning(f"SEO title '{seot}' is OVER 60 characters. It is {lenseot} characters long.")
                 else:
-                    st.info(f"SEO title '{h1}' is OPTIMIZED in length. It is {len_h1} characters long. Well done!")
+                    st.info(f"SEO title '{seot}' is OPTIMIZED in length. It is {lenseot} characters long. Well done!")
 
                 st.subheader("Meta Description Length:")
                 metad, len_metad = get_meta_description_length(soup)
