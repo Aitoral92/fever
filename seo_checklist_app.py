@@ -102,6 +102,8 @@ def main():
                 if art_list[-1] == cta_list:
                     total=art_ucount-1
                     st.info(f"There is a total of {art_ucount} unique articles and a total of {art_count} URLs linked into this article.\nOne of those links is the CTA, so total amount of unique articles is {total}.")
+                else:
+                    st.error(f"There is no internal linking done in this article. Please, add nternal linking throughout the content, linking to key content).", icon="🚨")
 
                 st.subheader("CTA Checker:")
                 cta_count,cta_list = check_cta(soup)
