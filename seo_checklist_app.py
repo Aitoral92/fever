@@ -4,6 +4,12 @@ from bs4 import BeautifulSoup
 from collections import Counter
 from urllib.parse import urlparse
 
+def count_hyphens_and_digits_in_url(url):
+    hyphen_count = url.count("-")
+    has_digit = any(char.isdigit() for char in url)
+    url_len = len(url)
+    return hyphen_count, has_digit, url_len
+
 def get_seo_title_length(soup):
     seot = soup.find('title')
     lenseot = len(seot.text)
@@ -20,7 +26,8 @@ def get_secondary_title_length(soup):
     return secondary.text if secondary else "No secondary title given", len_secondary
 
 def get_internal_links_count(soup, base_url):
-    all_content = soup.find("section", class_="article__body col-md-8")
+    soup_copy = BeautifulSoup(str(soup), "html.parser")
+    all_content = soup_copy.find("section", class_="article__body col-md-8")
     art_count = 0
     art_list = []
 
@@ -69,6 +76,18 @@ def main():
                 get_url = requests.get(url)
                 soup = BeautifulSoup(get_url.text, "html.parser")
 
+                st.subheader("URL friendliness")
+                hyphen_count, has_digit, url_len = count_hyphens_and_digits_in_url(url)
+                if hyphen_count > 3:
+                    st.warning(f"The URL seems to be too long (it is {url_len} characters long), does it need to be that long?", icon="⚠")
+                else:
+                    st.success(f"The URL looks fine in terms of length.", icon="✅")
+
+                if has_digit:
+                    st.warning("The URL doesn't seem very SEO friendly, does it really need a number?", icon="⚠")
+                else:
+                    st.success(f"The URL is fine in terms of SEO friendliness.", icon="✅")
+                
                 st.subheader("SEO Title Length:")
                 seot, lenseot = get_seo_title_length(soup)
                 if lenseot < 50:
@@ -98,7 +117,14 @@ def main():
 
                 st.subheader("Internal Links:")
                 art_ucount, art_count, art_list = get_internal_links_count(soup, url)
-                st.info(f"There is a total of {art_ucount} unique articles and a total of {art_count} URLs linked into this article.\n Here the links: {art_list}.")
+                cta_count,cta_list = check_cta(soup)
+                total = art_ucount - cta_count
+                if total <= 0:
+                    st.error(f"There's no internar linking in the article. Please, add relevant key content articles as internal links", icon="🚨")
+                elif total >0 and art_count < 3:
+                    st.warning(f"Please, consider adding more unique articles as internal links.\nThere is a total of {art_ucount} unique articles and a total of {art_count} URLs linked into this article.\n Here the links: {art_list}.", icon="⚠")
+                else:
+                    st.success(f"Internal linking nicely done!.\nThere is a total of {art_ucount} unique articles and a total of {art_count} URLs linked into this article.\n Here the links: {art_list}.", icon="✅")
       
 
                 st.subheader("CTA Checker:")
@@ -115,7 +141,6 @@ def main():
                         st.warning(f"Total amount of unique articles is just {total}. Please, add more internal linking throughout the content", icon="⚠")
                 else:
                     st.error("There is no CTA. Please add one evergreen key organic content as CTA.", icon="🚨")
-                cta_count,cta_list = check_cta(soup)
                 
                 st.subheader("Categories Count:")
                 cat_ucount, cat_count = get_categories_count(soup)
