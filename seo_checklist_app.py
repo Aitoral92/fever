@@ -29,15 +29,18 @@ def get_internal_links_count(soup, base_url):
     for a in all_content.find_all('a', href=True):
         link = a['href']
         parsed_link = urlparse(link)
-        if parsed_link.netloc == base_domain:
+        if parsed_link.netloc == base_domain and "/wp-content/" not in parsed_link.path:
             art_count += 1
             art_list.append(link)
 
     art_ucount = len(set(art_list))
-    return art_ucount, art_count
+    return art_ucount, art_count, art_list
 
 def check_cta(soup):
-    all_content = soup.find("div", class_="smn-tracklink-cta")
+    # Create a copy of soup so it does not interfare with internal links count
+    soup_copy = BeautifulSoup(str(soup), "html.parser")
+    
+    all_content = soup_copy.find("div", class_="smn-tracklink-cta")
 
     cta_count = 0
     cta_list = []
@@ -94,8 +97,11 @@ def main():
                     st.success(f"Secondary title '{secondary}' is OPTIMIZED in length. It is {len_secondary} characters long. Well done!", icon="✅")
 
                 st.subheader("Internal Links:")
-                art_ucount, art_count = get_internal_links_count(soup, url)
-                st.info(f"There is a total of {art_ucount} unique articles and a total of {art_count} linked into this article.")
+                art_ucount, art_count, art_list = get_internal_links_count(soup, url)
+                cta_count,cta_list = check_cta(soup)
+                if art_list[-1] == cta_list:
+                    total=art_ucount-1
+                    st.info(f"There is a total of {art_ucount} unique articles and a total of {art_count} URLs linked into this article.\nOne of those links is the CTA, so total amount of unique articles is {total}.")
 
                 st.subheader("CTA Checker:")
                 cta_count,cta_list = check_cta(soup)
