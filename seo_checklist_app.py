@@ -55,25 +55,25 @@ def main():
                 elif lenseot > 60:
                     st.error(f"SEO title '{seot}' is OVER 60 characters. It is {lenseot} characters long.", icon="🚨")
                 else:
-                    st.info(f"SEO title '{seot}' is OPTIMIZED in length. It is {lenseot} characters long. Well done!", icon="✅")
+                    st.success(f"SEO title '{seot}' is OPTIMIZED in length. It is {lenseot} characters long. Well done!", icon="✅")
 
                 st.subheader("Meta Description Length:")
                 metad, len_metad = get_meta_description_length(soup)
                 if len_metad < 120:
-                    st.success(f"Meta Description '{metad}' is BELOW 120 characters. It is {len_metad} characters long.")
+                    st.error(f"Meta Description '{metad}' is BELOW 120 characters. It is {len_metad} characters long.", icon="🚨" )
                 elif len_metad > 150:
-                    st.warning(f"Meta Description '{metad}' is OVER 150 characters. It is {len_metad} characters long.")
+                    st.error(f"Meta Description '{metad}' is OVER 150 characters. It is {len_metad} characters long.", icon="🚨" )
                 else:
-                    st.info(f"Meta Description '{metad}' is OPTIMIZED in length. It is {len_metad} characters long. Well done!")
+                    st.success(f"Meta Description '{metad}' is OPTIMIZED in length. It is {len_metad} characters long. Well done!", icon="✅")
 
                 st.subheader("Secondary Title Length:")
                 secondary, len_secondary = get_secondary_title_length(soup)
                 if len_secondary < 120:
-                    st.success(f"Secondary title '{secondary}' is BELOW 120 characters. It is {len_secondary} characters long.")
+                    st.error(f"Secondary title '{secondary}' is BELOW 120 characters. It is {len_secondary} characters long.", icon="🚨")
                 elif len_secondary > 180:
-                    st.warning(f"Secondary title '{secondary}' is OVER 180 characters. It is {len_secondary} characters long.")
+                    st.error(f"Secondary title '{secondary}' is OVER 180 characters. It is {len_secondary} characters long.", icon="🚨")
                 else:
-                    st.info(f"Secondary title '{secondary}' is OPTIMIZED in length. It is {len_secondary} characters long. Well done!")
+                    st.success(f"Secondary title '{secondary}' is OPTIMIZED in length. It is {len_secondary} characters long. Well done!", icon="✅")
 
                 st.subheader("Internal Links:")
                 art_ucount, art_count = get_internal_links_count(soup)
@@ -82,11 +82,11 @@ def main():
                 st.subheader("Categories Count:")
                 cat_ucount, cat_count = get_categories_count(soup)
                 if cat_count < 1:
-                    st.error("There are no categories. Please, add a max of two categories.")
+                    st.error("There are no categories. Please, add a max of two categories.", icon="🚨")
                 elif cat_count > 2:
-                    st.warning("There are more than 2 categories. Please, limit it to two.")
+                    st.error("There are more than 2 categories. Please, limit it to two.", icon="🚨")
                 else:
-                    st.success(f"There is a total of {cat_ucount} categories in this article. Perfect!")
+                    st.success(f"There is a total of {cat_ucount} categories in this article. Perfect!", icon="✅")
             except Exception as e:
                 st.error("Error: Unable to analyze the URL. Please, check if it's valid.")
         else:
