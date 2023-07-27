@@ -29,19 +29,18 @@ def get_internal_links_count(soup, base_url):
     for a in all_content.find_all('a', href=True):
         link = a['href']
         parsed_link = urlparse(link)
-        if parsed_link.netloc == base_domain:
-            if "/wp-content/" not in parsed_link.path:
-                art_count += 1
-                art_list.append(link)
+        if parsed_link.netloc == base_domain and "/wp-content/" not in parsed_link.path:
+            art_count += 1
+            art_list.append(link)
 
     art_ucount = len(set(art_list))
     return art_ucount, art_count, art_list
 
 def check_cta(soup):
-    # Create a copy of soup so it does not interfare with internal links count
-    soup_copy = BeautifulSoup(str(soup), "html.parser")
+    # # Create a copy of soup so it does not interfare with internal links count
+    # soup_copy = BeautifulSoup(str(soup), "html.parser")
     
-    all_content = soup_copy.find("div", class_="smn-tracklink-cta")
+    all_content = soup.find("div", class_="smn-tracklink-cta")
 
     cta_count = 0
     cta_list = []
