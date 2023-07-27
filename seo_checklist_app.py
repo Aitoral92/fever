@@ -98,26 +98,25 @@ def main():
 
                 st.subheader("Internal Links:")
                 art_ucount, art_count, art_list = get_internal_links_count(soup, url)
-                if art_ucount < 1:
-                    st.error(f"There is no internal linking done in this article. Please, add internal linking throughout the content, linking to key content).", icon="🚨")
-                else: st.info(f"There is a total of {art_ucount} unique articles and a total of {art_count} URLs linked into this article.")
-                cta_count,cta_list = check_cta(soup)
-                if art_list[-1] == cta_list:
-                    total=art_ucount-1
-                    if total>1:
-                        st.info(f"\nOne link is the CTA, so total amount of unique articles is {total}.")
-                    elif total == 0:
-                        st.error(f"There is no internal linking done in this article. Please, add internal linking throughout the content, linking to key content.", icon="🚨")
-                    else:
-                        st.warning(f"One link is the CTA, so total amount of unique articles is just {total}. Please, add more internal linking throughout the content", icon="⚠")
+                st.info(f"There is a total of {art_ucount} unique articles and a total of {art_count} URLs linked into this article.\n Here the links: {art_list}.")
+      
 
                 st.subheader("CTA Checker:")
                 cta_count,cta_list = check_cta(soup)
                 if cta_count > 0:
                     st.success(f"There is a CTA: {cta_list}", icon="✅")
+                    st.info(f"That means that from {art_ucount} links, one is the CTA.")
+                    total=art_ucount-1
+                    if total>1:
+                        st.info(f"\nTotal amount of unique articles is {total}.")
+                    elif total == 0:
+                        st.error(f"There is no internal linking done in this article. Please, add internal linking throughout the content, linking to key content.", icon="🚨")
+                    else:
+                        st.warning(f"Total amount of unique articles is just {total}. Please, add more internal linking throughout the content", icon="⚠")
                 else:
-                    st.error("There is not a CTA. Please add one evergreen key organic content as CTA.", icon="🚨")
-
+                    st.error("There is no CTA. Please add one evergreen key organic content as CTA.", icon="🚨")
+                cta_count,cta_list = check_cta(soup)
+                
                 st.subheader("Categories Count:")
                 cat_ucount, cat_count = get_categories_count(soup)
                 if cat_count < 1:
