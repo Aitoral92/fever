@@ -120,11 +120,11 @@ def main():
                 cta_count,cta_list = check_cta(soup)
                 total = art_ucount - cta_count
                 if total <= 0:
-                    st.error(f"There's no internar linking in the article. Please, add relevant key content articles as internal links", icon="🚨")
+                    st.error(f"There's no internal linking in the article. Please, add relevant key content articles as internal links", icon="🚨")
                 elif total >0 and art_count < 3:
                     st.warning(f"Please, consider adding more unique articles as internal links.\nThere is a total of {art_ucount} unique articles and a total of {art_count} URLs linked into this article.\n Here the links: {art_list}.", icon="⚠")
                 else:
-                    st.success(f"Internal linking nicely done!.\nThere is a total of {art_ucount} unique articles and a total of {art_count} URLs linked into this article.\n Here the links: {art_list}.", icon="✅")
+                    st.success(f"Internal linking nicely done!.\nThere is a total of {total} unique articles and a total of {art_count} URLs linked into this article.\n Here the links: {art_list}.", icon="✅")
       
 
                 st.subheader("CTA Checker:")
