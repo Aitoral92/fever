@@ -98,12 +98,18 @@ def main():
 
                 st.subheader("Internal Links:")
                 art_ucount, art_count, art_list = get_internal_links_count(soup, url)
+                if art_ucount < 1:
+                    st.error(f"There is no internal linking done in this article. Please, add internal linking throughout the content, linking to key content).", icon="🚨")
+                else: st.info(f"There is a total of {art_ucount} unique articles and a total of {art_count} URLs linked into this article.")
                 cta_count,cta_list = check_cta(soup)
                 if art_list[-1] == cta_list:
                     total=art_ucount-1
-                    st.info(f"There is a total of {art_ucount} unique articles and a total of {art_count} URLs linked into this article.\nOne of those links is the CTA, so total amount of unique articles is {total}.")
-                else:
-                    st.error(f"There is no internal linking done in this article. Please, add nternal linking throughout the content, linking to key content).", icon="🚨")
+                    if total>1:
+                        st.info(f"\nOne link is the CTA, so total amount of unique articles is {total}.")
+                    elif total == 0:
+                        st.error(f"There is no internal linking done in this article. Please, add internal linking throughout the content, linking to key content.", icon="🚨")
+                    else:
+                        st.warning(f"One link is the CTA, so total amount of unique articles is just {total}. Please, add more internal linking throughout the content", icon="⚠")
 
                 st.subheader("CTA Checker:")
                 cta_count,cta_list = check_cta(soup)
