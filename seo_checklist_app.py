@@ -104,7 +104,7 @@ def main():
                 elif len_metad > 150:
                     st.error(f"Meta Description '{metad}' is OVER 150 characters. It is {len_metad} characters long.", icon="🚨" )
                 else:
-                    st.success(f"Meta Description '{metad}' is OPTIMIZED in length. It is {len_metad} characters long. Well done!", icon="✅")
+                    st.success(f"Meta Description is OPTIMIZED in length. It is {len_metad} characters long. Well done!\n\n Meta Description: '{metad}'", icon="✅")
 
                 st.subheader("Secondary Title Length:")
                 secondary, len_secondary = get_secondary_title_length(soup)
@@ -131,7 +131,7 @@ def main():
                 cta_count,cta_list = check_cta(soup)
                 if cta_count > 0:
                     st.success(f"There is a CTA: {cta_list}", icon="✅")
-                    st.info(f"That means that from {art_ucount} links, one is the CTA.")
+                    st.info(f"That means that from the {art_ucount} links, one is the CTA.")
                     total=art_ucount-1
                     if total>1:
                         st.info(f"\nTotal amount of unique articles is {total}.")
