@@ -51,9 +51,13 @@ def check_cta(soup):
 
     cta_count = 0
     cta_list = []
-    for a in all_content.find_all('a', href=True):
-        cta_count += 1
-        cta_list.append(a['href'])
+    try:
+        for a in all_content.find_all('a', href=True):
+            cta_count += 1
+            cta_list.append(a['href'])
+    except AttributeError:
+        cta_count = 0
+        cta_list = []
     return cta_count, cta_list
 
 def get_categories_count(soup):
