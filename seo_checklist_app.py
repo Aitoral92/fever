@@ -36,16 +36,6 @@ def get_internal_links_count(soup, base_url):
     art_ucount = len(set(art_list))
     return art_ucount, art_count
 
-def check_cta(soup):
-    all_content = soup.find("div", class_="smn-tracklink-cta")
-
-    cta_count = 0
-    cta_list = []
-    for a in all_content.find_all('a', href=True):
-        cta_count += 1
-        cta_list.append(a['href'])
-    return cta_count, cta_list
-
 def get_categories_count(soup):
     all_content = soup.find("div", class_="post-list-view-home__category-wrapper")
     cat_count = 0
@@ -96,13 +86,6 @@ def main():
                 st.subheader("Internal Links:")
                 art_ucount, art_count = get_internal_links_count(soup, url)
                 st.info(f"There is a total of {art_ucount} unique articles and a total of {art_count} linked into this article.")
-
-                st.subheader("CTA Checker:")
-                cta_count,cta_list = check_cta(soup)
-                if cta_count > 0:
-                    st.success(f"There is a CTA: {cta_list}", icon="✅")
-                else:
-                    st.error("There is not a CTA. Please add one evergreen key organic content as CTA.", icon="🚨")
 
                 st.subheader("Categories Count:")
                 cat_ucount, cat_count = get_categories_count(soup)
