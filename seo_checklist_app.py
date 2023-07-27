@@ -19,26 +19,21 @@ def get_secondary_title_length(soup):
     len_secondary = len(secondary.text) if secondary else 0
     return secondary.text if secondary else "No secondary title given", len_secondary
 
-def get_internal_links_count(url, soup):
+def get_internal_links_count(soup, base_url):
     all_content = soup.find("section", class_="article__body col-md-8")
     art_count = 0
     art_list = []
 
-    # Parse the URL to get the domain
-    domain = urlparse(url).netloc
+    base_domain = urlparse(base_url).netloc
 
     for a in all_content.find_all('a', href=True):
-        link_url = a['href']
-
-        # Parse the link URL to get its domain
-        link_domain = urlparse(link_url).netloc
-
-        # Check if the link belongs to the same domain as the main URL
-        if domain == link_domain:
+        link = a['href']
+        parsed_link = urlparse(link)
+        if parsed_link.netloc == base_domain:
             art_count += 1
-            art_list.append(link_url)
+            art_list.append(link)
 
-    art_ucount = len(Counter(art_list).keys())
+    art_ucount = len(set(art_list))
     return art_ucount, art_count
 
 def get_categories_count(soup):
@@ -89,7 +84,7 @@ def main():
                     st.success(f"Secondary title '{secondary}' is OPTIMIZED in length. It is {len_secondary} characters long. Well done!", icon="✅")
 
                 st.subheader("Internal Links:")
-                art_ucount, art_count = get_internal_links_count(soup)
+                art_ucount, art_count = get_internal_links_count(soup, url)
                 st.info(f"There is a total of {art_ucount} unique articles and a total of {art_count} linked into this article.")
 
                 st.subheader("Categories Count:")
