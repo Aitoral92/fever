@@ -82,14 +82,14 @@ def main():
 
                 st.subheader("URL friendliness")
                 hyphen_count, has_digit, url_len = count_hyphens_and_digits_in_url(url)
-                st.info(f"This is de URL:\n{url}")
+                st.info(f"This is de URL:\n{url}", icon="👀")
                 if hyphen_count > 3:
-                    st.warning(f"The URL seems to be too long (it is {url_len} characters long), consider shorten it.", icon="⚠")
+                    st.warning(f"The URL seems to be too long (it is {url_len} characters long), consider shorten it.", icon="⚠️")
                 else:
                     st.success(f"The URL looks fine in terms of length.", icon="✅")
 
                 if has_digit:
-                    st.warning("The URL doesn't seem very SEO friendly. Consider removing the number if it is not needed.", icon="⚠")
+                    st.warning("The URL doesn't seem very SEO friendly. Consider removing the number if it is not needed.", icon="⚠️")
                 else:
                     st.success(f"The URL is fine in terms of SEO friendliness.", icon="✅")
                 
@@ -127,7 +127,7 @@ def main():
                 if total <= 0:
                     st.error(f"There's no internal linking in the article. Please, add relevant key content articles as internal links.", icon="🚨")
                 elif total >0 and art_count < 3:
-                    st.warning(f"Please, consider adding more unique articles as internal links.\nThere is a total of {art_ucount} unique articles and a total of {art_count} URLs linked into this article.\n Here the links: {art_list}.", icon="⚠")
+                    st.warning(f"Please, consider adding more unique articles as internal links.\nThere is a total of {art_ucount} unique articles and a total of {art_count} URLs linked into this article.\n Here the links: {art_list}.", icon="⚠️")
                 else:
                     st.success(f"Internal linking nicely done!.\nThere is a total of {total} unique articles and a total of {art_count} URLs linked into this article.\n Here the links: {art_list}.", icon="✅")
       
@@ -135,14 +135,14 @@ def main():
                 cta_count,cta_list = check_cta(soup)
                 if cta_count > 0:
                     st.success(f"There is a CTA: {cta_list}", icon="✅")
-                    st.info(f"That means that from the {art_ucount} links, one is the CTA.")
+                    st.info(f"That means that from the {art_ucount} links, one is the CTA.", icon="👀")
                     total=art_ucount-1
                     if total>1:
-                        st.info(f"\nTotal amount of unique articles is {total}.")
+                        st.info(f"\nTotal amount of unique articles is {total}.", icon="👀")
                     elif total == 0:
                         st.error(f"There is no internal linking done in this article. Please, add internal linking throughout the content, linking to key content.", icon="🚨")
                     else:
-                        st.warning(f"Total amount of unique articles is just {total}. Please, add more internal linking throughout the content", icon="⚠")
+                        st.warning(f"Total amount of unique articles is just {total}. Please, add more internal linking throughout the content", icon="⚠️")
                 else:
                     st.error("There is no CTA. Please add one evergreen key organic content as CTA.", icon="🚨")
                 
