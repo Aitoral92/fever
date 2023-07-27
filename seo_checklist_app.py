@@ -2,6 +2,7 @@ import streamlit as st
 import requests
 from bs4 import BeautifulSoup
 from collections import Counter
+from urllib.parse import urlparse
 
 def get_seo_title_length(soup):
     seot = soup.find('title')
@@ -18,13 +19,25 @@ def get_secondary_title_length(soup):
     len_secondary = len(secondary.text) if secondary else 0
     return secondary.text if secondary else "No secondary title given", len_secondary
 
-def get_internal_links_count(soup):
+def get_internal_links_count(url, soup):
     all_content = soup.find("section", class_="article__body col-md-8")
     art_count = 0
     art_list = []
+
+    # Parse the URL to get the domain
+    domain = urlparse(url).netloc
+
     for a in all_content.find_all('a', href=True):
-        art_count += 1
-        art_list.append(a['href'])
+        link_url = a['href']
+
+        # Parse the link URL to get its domain
+        link_domain = urlparse(link_url).netloc
+
+        # Check if the link belongs to the same domain as the main URL
+        if domain == link_domain:
+            art_count += 1
+            art_list.append(link_url)
+
     art_ucount = len(Counter(art_list).keys())
     return art_ucount, art_count
 
