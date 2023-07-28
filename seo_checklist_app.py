@@ -70,6 +70,63 @@ def get_categories_count(soup):
     cat_ucount = len(Counter(cat_list).keys())
     return cat_ucount, cat_count
 
+def check_featured_image(soup):
+    ft_img = soup.find("meta", property="og:image")
+    if ft_img and 'content' in ft_img.attrs:
+        st.subheader("Featured Image Check:")
+        st.write("El artículo tiene una imagen destacada.")
+        
+        ft_img_width = soup.find("meta", property="og:image:width")
+        if ft_img_width and 'content' in ft_img_width.attrs:
+            image_width = int(ft_img_width['content'])
+            if image_width >= 1200:
+                st.success("La imagen es del tamaño adecuado: {}px".format(image_width))
+            else:
+                st.error("La imagen destacada es de {}px de ancho y debe tener un mínimo de 1200px.".format(image_width))
+        else:
+            st.warning("No se encontró el ancho de la imagen en la etiqueta og:image:width.")
+    else:
+        st.subheader("Featured Image Check:")
+        st.warning("No hay ninguna imagen destacada. Por favor, añade una.")
+
+def check_alt_attribute(soup):
+    all_content = soup.find("section", class_="article__body col-md-8")
+    alt_text = all_content.find("img", alt=True)
+    if alt_text:
+        st.subheader("Alt Attribute Check:")
+        st.write("El atributo alt de la imagen es: {}".format(alt_text["alt"]))
+    else:
+        st.subheader("Alt Attribute Check:")
+        st.error("La imagen no tiene atributo Alt. Añádele un alt.")
+
+def count_normal_images(soup):
+    all_content = soup.find("section", class_="article__body col-md-8")
+    img_count = 0
+    alt_count = 0
+    alt_list = []
+    for img in all_content.find_all('img', alt=True):
+        # Verificar si la etiqueta 'img' tiene la clase "emoji" o está dentro de <noscript></noscript>
+        if "emoji" in img.get("class", []) or img.find_parent("noscript"):
+            continue  # Ignorar esta etiqueta 'img' y pasar a la siguiente
+
+        img_count += 1
+        if len(img["alt"]) > 0:
+            alt_count += 1
+            alt_list.append(img["alt"])
+    st.subheader("Normal Images Check:")
+    st.write("Hay un total de {} imágenes normales, de las cuales {} tienen atributo alt.".format(img_count, alt_count))
+    st.write("Estos son los alts:")
+    for alt in alt_list:
+        st.write("- " + alt)
+
+def count_embedded_images(soup):
+    all_content = soup.find("section", class_="article__body col-md-8")
+    ig_count = 0
+    for img in all_content.find_all('blockquote', class_=True):
+        ig_count += 1
+    st.subheader("Embedded Instagram Images Check:")
+    st.write("Hay un total de {} imágenes embedadas de IG".format(ig_count))
+
 def main():
     st.title("Web Page SEO Analyzer")
     url = st.text_input("Paste the URL:")
@@ -99,6 +156,7 @@ def main():
                     st.error(f"SEO title is BELOW 50 characters. It is {lenseot} characters long.\n\nSEO Title: '{seot}'", icon="🚨" )
                 elif lenseot > 60:
                     st.error(f"SEO title is OVER 60 characters. It is {lenseot} characters long.\n\nSEO Title: '{seot}'", icon="🚨")
+                    st.warning(f"If this is a 'News' kind of article and not an Evergreen/Roundup, the SEO Title can be longer for editorial purposes", icon="⚠️")
                 else:
                     st.success(f"SEO title is OPTIMIZED in length. It is {lenseot} characters long. Well done!\n\nSEO Title: '{seot}'", icon="✅")
 
@@ -127,7 +185,7 @@ def main():
                 if total <= 0:
                     st.error(f"There's no internal linking in the article. Please, add relevant key content articles as internal links.", icon="🚨")
                 elif total >0 and art_count < 3:
-                    st.warning(f"Please, consider adding more unique articles as internal links.\nThere is a total of {art_ucount} unique articles and a total of {art_count} URLs linked into this article.\n Here the links: {art_list}.", icon="⚠️")
+                    st.warning(f"Please, consider adding more unique articles as internal links.\n\n There is a total of {art_ucount} unique articles and a total of {art_count} URLs linked into this article.\n\n Here the links: {art_list}.", icon="⚠️")
                 else:
                     st.success(f"Internal linking nicely done!.\nThere is a total of {total} unique articles and a total of {art_count} URLs linked into this article.\n Here the links: {art_list}.", icon="✅")
       
@@ -154,6 +212,13 @@ def main():
                     st.error("There are more than 2 categories. Please, limit it to one or two.", icon="🚨")
                 else:
                     st.success(f"There is a total of {cat_ucount} categories in this article. Perfect!", icon="✅")
+                
+                check_featured_image(soup)
+                check_alt_attribute(soup)
+                count_normal_images(soup)
+                count_embedded_images(soup)                
+
+
             except Exception as e:
                 st.error("Error: Unable to analyze the URL. Please, check if it's valid.")
         else:
