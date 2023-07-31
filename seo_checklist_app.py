@@ -228,7 +228,7 @@ def main():
                     if total <= 0:
                         st.error(f"There's no internal linking in the article. Please, add relevant key content articles as internal links.", icon="🚨")
                     elif total >0 and total < 3:
-                        st.warning(f"Please, consider adding more unique articles as internal links.\n\n There is a total of {total} non CTA unique articles and a total of {art_count} URLs linked into this article.\n\n Here are the links: {art_list}.", icon="⚠️")
+                        st.warning(f"Please, consider adding more unique articles as internal links.\n\n There is a total of {total} unique articles and a total of {art_count} URLs (one being the CTA) linked into this article.\n\n Here are the links: {art_list}.", icon="⚠️")
                     else:
                         st.success(f"Internal linking nicely done!.\nThere is a total of {total} no CTA unique articles in the content and a total of {art_count} URLs linked into this article.\n Here the links: {art_list}.", icon="✅")                
                 else:
@@ -276,6 +276,11 @@ def main():
 
                 st.subheader("Images in content:")
                 img_count, alt_count, alt_list, ig_count, total = get_total_image_count(soup)
+                
+                if ig_count is not 0 and img_count <=1:
+                    st.error(f"All the images (except for the featured one) are Instagram embededs. Please, add real images instead.", icon="🚨")
+
+                    
                 if img_count <= 1:
                     st.error(f"There is no images thoughout the article besides the featured one. Please, add images.", icon="🚨")
                 elif ig_count is 0:
