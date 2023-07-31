@@ -134,6 +134,14 @@ def get_featured_image_width(soup):
     else:
         return None
 
+def get_featured_image_alt(soup):
+    all_content = soup.find("section", class_="article__body col-md-8")
+    alt_text = all_content.find("img", alt=True)
+    if alt_text:
+        return alt_text["alt"]
+    else:
+        return None
+    
 def main():
     st.title("Web Page SEO Analyzer")
     url = st.text_input("Paste the URL:")
@@ -220,16 +228,16 @@ def main():
                 else:
                     st.success(f"There is a total of {cat_ucount} categories in this article. Perfect!", icon="✅")
                 
-                st.subheader("Featured Image Size:")                
+                st.subheader("Featured Image Size and Alt:")                
                 width = get_featured_image_width(soup)
-        
+                alt = get_featured_image_alt(soup)
                 if width is not None:
                     if width >= 1200:
-                        st.success(f"La imagen destacada es del tamaño adecuado: {width}px", icon="✅")
+                        st.success(f"The featured image is of the correct width: {width}px. The alt is {alt}", icon="✅")
                     else:
-                        st.warning(f"La imagen destacada es de {width}px de ancho y debe tener de mínimo 1200px.", icon="⚠️")            
+                        st.warning(f"Remember: feature image must be at least 1200px wide.\n\nThe current featured image is {width}px wide. The alt is {alt}", icon="⚠️")            
                 else:
-                    st.error("El artículo no tiene imagen destacada. Por favor, añade una con un ancho mínimo de 1200px.", icon="🚨")              
+                    st.error("The article has no featured image. Please add one of a minimum of 1200px wide.", icon="🚨")              
 
 
             except Exception as e:
