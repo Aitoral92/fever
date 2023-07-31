@@ -125,11 +125,12 @@ def main():
 
     if st.button("Analyze"):
         if url:
+            st.subheader("URL friendliness")
             try:
                 get_url = requests.get(url)
                 soup = BeautifulSoup(get_url.text, "html.parser")
 
-                st.subheader("URL friendliness")
+                
                 hyphen_count, has_digit, url_len = count_hyphens_and_digits_in_url(url)
                 st.info(f"This is the URL:\n{url}", icon="👀")
                 if hyphen_count > 3:
@@ -143,10 +144,12 @@ def main():
                     st.success(f"The URL is fine in terms of SEO friendliness.", icon="✅")
             except Exception as e:
                 st.error("Error: Unable to analyze the URL. Please, check if it's valid.")
+            
+            st.subheader("SEO Title Length:")
             try:
                 get_url = requests.get(url)
                 soup = BeautifulSoup(get_url.text, "html.parser")                                
-                st.subheader("SEO Title Length:")
+                
                 seot, lenseot = get_seo_title_length(soup)
                 if lenseot < 50:
                     st.error(f"SEO title is BELOW 50 characters. It is {lenseot} characters long.\n\nSEO Title: '{seot}'", icon="🚨" )
@@ -195,7 +198,8 @@ def main():
                 if cta_count is not 0:
                     total = art_ucount - cta_count
                     if total <= 0:
-                        st.error(f"There's no internal linking in the article. Please, add relevant key content articles as internal links.", icon="🚨")
+                        st.warning(f"If this is a Fever branded article, please do not mind this alert, as internal linking is not applied.", icon="⚠️")
+                        st.error(f"There's no internal linking in the article. Please, add relevant key content articles as internal links.", icon="🚨") 
                     elif total >0 and total < 3:
                         st.warning(f"Please, consider adding more unique articles as internal links.\n\n There is a total of {total} unique articles and a total of {art_count} URLs (one being the CTA) linked into this article.\n\n Here are the links: {art_list}.", icon="⚠️")
                     else:
