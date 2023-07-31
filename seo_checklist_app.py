@@ -201,7 +201,7 @@ def main():
                     else:
                         if total > 3:
                             st.success(f"Internal linking nicely done!\nThere is a total of {total} no CTA unique articles in the content and a total of {art_count} URLs linked into this article.") 
-                            with st.expander (f"See the links:{art_list}", icon="👀"):
+                            st.expander (f"See the links: {art_list}", icon="👀")
                                       
                 else:
                     if art_ucount < 1:
