@@ -200,8 +200,7 @@ def main():
                         st.warning(f"Please, consider adding more unique articles as internal links.\n\n There is a total of {total} unique articles and a total of {art_count} URLs (one being the CTA) linked into this article.\n\n Here are the links: {art_list}.", icon="⚠️")
                     else:
                         if total > 3:
-                            st.success(f"Internal linking nicely done!\nThere is a total of {total} no CTA unique articles in the content and a total of {art_count} URLs linked into this article.") 
-                            st.expander (f"See the links: {art_list}", icon="👀")
+                            st.success(f"Internal linking nicely done!\nThere is a total of {total} no CTA unique articles in the content and a total of {art_count} URLs linked into this article.\n\nSee the links:\n\n{art_list}", icon="✅")
                                       
                 else:
                     if art_ucount < 1:
