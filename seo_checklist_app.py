@@ -286,9 +286,10 @@ def main():
                             st.success(f"There is a total of {img_count} images, from which all of them have an alt.\n\nThis are the alts:{alt_list}", icon="✅")
                         else:
                             st.warning(f"There is a total of {img_count} images, from which {img_count-alt_count} have no alt.\n\nPlease, add an Alt to the images.", icon="⚠️")
-                    else:
-                        st.warning(f"There is a total of {total} images, from which {ig_count} are embeded from Instagram. Please, try not to use embeded images.", icon="⚠️")
-                        st.warning(f"From those {total} images, {img_count-alt_count} have no alt. Please, add an alt to the images.", icon="⚠️")
+                else:
+                    st.warning(f"There is a total of {total} images, from which {ig_count} are embeded from Instagram. Please, try not to use embeded images.", icon="⚠️")
+                    st.warning(f"From those {total} images, {img_count-alt_count} have no alt. Please, add an alt to the images.", icon="⚠️")
+
 
 
             except Exception as e:
