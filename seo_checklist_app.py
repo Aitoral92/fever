@@ -70,63 +70,6 @@ def get_categories_count(soup):
     cat_ucount = len(Counter(cat_list).keys())
     return cat_ucount, cat_count
 
-# def check_featured_image(soup):
-#     ft_img = soup.find("meta", property="og:image")
-#     if ft_img and 'content' in ft_img.attrs:
-#         st.subheader("Featured Image Check:")
-#         st.write("El artículo tiene una imagen destacada.")
-        
-#         ft_img_width = soup.find("meta", property="og:image:width")
-#         if ft_img_width and 'content' in ft_img_width.attrs:
-#             image_width = int(ft_img_width['content'])
-#             if image_width >= 1200:
-#                 st.success("La imagen es del tamaño adecuado: {}px".format(image_width))
-#             else:
-#                 st.error("La imagen destacada es de {}px de ancho y debe tener un mínimo de 1200px.".format(image_width))
-#         else:
-#             st.warning("No se encontró el ancho de la imagen en la etiqueta og:image:width.")
-#     else:
-#         st.subheader("Featured Image Check:")
-#         st.warning("No hay ninguna imagen destacada. Por favor, añade una.")
-
-# def check_alt_attribute(soup):
-#     all_content = soup.find("section", class_="article__body col-md-8")
-#     alt_text = all_content.find("img", alt=True)
-#     if alt_text:
-#         st.subheader("Alt Attribute Check:")
-#         st.write("El atributo alt de la imagen es: {}".format(alt_text["alt"]))
-#     else:
-#         st.subheader("Alt Attribute Check:")
-#         st.error("La imagen no tiene atributo Alt. Añádele un alt.")
-
-# def count_normal_images(soup):
-#     all_content = soup.find("section", class_="article__body col-md-8")
-#     img_count = 0
-#     alt_count = 0
-#     alt_list = []
-#     for img in all_content.find_all('img', alt=True):
-#         # Verificar si la etiqueta 'img' tiene la clase "emoji" o está dentro de <noscript></noscript>
-#         if "emoji" in img.get("class", []) or img.find_parent("noscript"):
-#             continue  # Ignorar esta etiqueta 'img' y pasar a la siguiente
-
-#         img_count += 1
-#         if len(img["alt"]) > 0:
-#             alt_count += 1
-#             alt_list.append(img["alt"])
-#     st.subheader("Normal Images Check:")
-#     st.write("Hay un total de {} imágenes normales, de las cuales {} tienen atributo alt.".format(img_count, alt_count))
-#     st.write("Estos son los alts:")
-#     for alt in alt_list:
-#         st.write("- " + alt)
-
-# def count_embedded_images(soup):
-#     all_content = soup.find("section", class_="article__body col-md-8")
-#     ig_count = 0
-#     for img in all_content.find_all('blockquote', class_=True):
-#         ig_count += 1
-#     st.subheader("Embedded Instagram Images Check:")
-#     st.write("Hay un total de {} imágenes embedadas de IG".format(ig_count))
-
 def get_featured_image_width(soup):
     ft_img_width = soup.find("meta", property="og:image:width")
     if ft_img_width and 'content' in ft_img_width.attrs:
@@ -170,8 +113,8 @@ def get_total_image_count(soup):
 
 
 def main():
-    st.title("Web Page SEO Analyzer")
-    url = st.text_input("Paste the URL:")
+    st.title("SEO Checklist Analyzer")
+    url = st.text_input("Paste the URL and press 'Analyze' button:")
 
     if st.button("Analyze"):
         if url:
@@ -181,7 +124,7 @@ def main():
 
                 st.subheader("URL friendliness")
                 hyphen_count, has_digit, url_len = count_hyphens_and_digits_in_url(url)
-                st.info(f"This is de URL:\n{url}", icon="👀")
+                st.info(f"This is the URL:\n{url}", icon="👀")
                 if hyphen_count > 3:
                     st.warning(f"The URL seems to be too long (it is {url_len} characters long), consider shorten it.", icon="⚠️")
                 else:
@@ -230,7 +173,8 @@ def main():
                     elif total >0 and total < 3:
                         st.warning(f"Please, consider adding more unique articles as internal links.\n\n There is a total of {total} unique articles and a total of {art_count} URLs (one being the CTA) linked into this article.\n\n Here are the links: {art_list}.", icon="⚠️")
                     else:
-                        st.success(f"Internal linking nicely done!.\nThere is a total of {total} no CTA unique articles in the content and a total of {art_count} URLs linked into this article.\n Here the links: {art_list}.", icon="✅")                
+                        if total > 3:
+                            st.success(f"Internal linking nicely done!.\nThere is a total of {total} no CTA unique articles in the content and a total of {art_count} URLs linked into this article.\n Here the links: {art_list}.", icon="✅")                
                 else:
                     if art_ucount < 1:
                         st.error(f"There's no internal linking in the article. Please, add relevant key content articles as internal links.", icon="🚨")
@@ -243,14 +187,14 @@ def main():
                 cta_count,cta_list = check_cta(soup)
                 if cta_count > 0:
                     st.success(f"There is a CTA: {cta_list}", icon="✅")
-                    st.info(f"That means that from the {art_ucount} links, one is the CTA.", icon="👀")
-                    total=art_ucount-1
-                    if total>1:
-                        st.info(f"\nTotal amount of unique articles is {total}.", icon="👀")
-                    elif total == 0:
-                        st.error(f"There is no internal linking done in this article. Please, add internal linking throughout the content, linking to key content.", icon="🚨")
-                    else:
-                        st.warning(f"Total amount of unique articles is just {total}. Please, add more internal linking throughout the content", icon="⚠️")
+                    # st.info(f"That means that from the {art_ucount} links, one is the CTA.", icon="👀")
+                #     total=art_ucount-1
+                #     if total>1:
+                #         st.info(f"\nTotal amount of unique articles is {total}.", icon="👀")
+                #     elif total == 0:
+                #         st.error(f"There is no internal linking done in this article. Please, add internal linking throughout the content, linking to key content.", icon="🚨")
+                #     else:
+                #         st.warning(f"Total amount of unique articles is just {total}. Please, add more internal linking throughout the content", icon="⚠️")
                 else:
                     st.error("There is no CTA. Please add one evergreen key organic content as CTA.", icon="🚨")
                 
