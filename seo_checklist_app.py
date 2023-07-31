@@ -141,7 +141,34 @@ def get_featured_image_alt(soup):
         return alt_text["alt"]
     else:
         return None
+
+def get_total_image_count(soup):
+    all_content = soup.find("section", class_="article__body col-md-8")
+
+    img_count = 0
+    alt_count = 0
+    alt_list = []
+    ig_count = 0
+
+    # Contar imagenes normales
+    for img in all_content.find_all('img', alt=True):
+        # Verificar si la etiqueta 'img' tiene la clase "emoji" o está dentro de <noscript></noscript>
+        if "emoji" in img.get("class", []) or img.find_parent("noscript"):
+            continue  # Ignorar esta etiqueta 'img' y pasar a la siguiente
+        img_count += 1
+        if len(img["alt"]) > 0:
+            alt_count += 1
+            alt_list.append(img["alt"])
     
+    # Contar imagenes embedadas
+    for img in all_content.find_all('blockquote', class_=True):
+        ig_count += 1
+
+    total=img_count+ig_count
+    
+    return img_count, alt_count, alt_list, ig_count, total
+
+
 def main():
     st.title("Web Page SEO Analyzer")
     url = st.text_input("Paste the URL:")
@@ -233,11 +260,24 @@ def main():
                 alt = get_featured_image_alt(soup)
                 if width is not None:
                     if width >= 1200:
-                        st.success(f"The featured image is of the correct width: {width}px. The alt is {alt}", icon="✅")
+                        st.success(f"The featured image meets width requirements: {width}px.\n\nThe alt is {alt}", icon="✅")
                     else:
-                        st.warning(f"Remember: feature image must be at least 1200px wide.\n\nThe current featured image is {width}px wide. The alt is {alt}", icon="⚠️")            
+                        st.warning(f"Remember: feature image must be at least 1200px wide.\n\nThe current featured image is {width}px wide.\n\nThe alt is {alt}", icon="⚠️")            
                 else:
                     st.error("The article has no featured image. Please add one of a minimum of 1200px wide.", icon="🚨")              
+
+                st.subheader("Images in content:")
+                img_count, alt_count, alt_list, ig_count, total = get_total_image_count(soup)
+                if img_count <= 1:
+                    st.error(f"There is no images thoughout the article besides the featured one. Please, add images.", icon="🚨")
+                elif ig_count is 0:
+                    if alt_count == img_count:
+                        st.success(f"There is a total of {img_count} images, from which all of them have an alt.\n\nThis are the alts:{alt_list}", icon="✅")
+                    else:
+                        st.warning(f"There is a total of {img_count} images, from which {img_count-alt_count} have no alt.\n\nPlease, add an Alt to the images.", icon="⚠️")
+                else:
+                    st.warning(f"There is a total of {total} images, from which {ig_count} are embeded from Instagram. Please, try not to use embeded images.", icon="⚠️")
+                    st.warning(f"From those {total} images, {img_count-alt_count} have no alt. Please, add an alt to the images.", icon="⚠️")
 
 
             except Exception as e:
