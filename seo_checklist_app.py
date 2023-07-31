@@ -280,7 +280,7 @@ def main():
                 if ig_count is not 0 and img_count <=1:
                     st.error(f"All the images (except for the featured one) are Instagram embededs. Please, add real images instead.", icon="🚨")
 
-                elif img_count <= 1:    
+                elif img_count > 1:    
                     if ig_count is 0:
                         if alt_count == img_count:
                             st.success(f"There is a total of {img_count} images, from which all of them have an alt.\n\nThis are the alts:{alt_list}", icon="✅")
