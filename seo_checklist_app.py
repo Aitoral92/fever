@@ -223,13 +223,21 @@ def main():
                 st.subheader("Internal Links:")
                 art_ucount, art_count, art_list = get_internal_links_count(soup, url)
                 cta_count,cta_list = check_cta(soup)
-                total = art_ucount - cta_count
-                if total <= 0:
-                    st.error(f"There's no internal linking in the article. Please, add relevant key content articles as internal links.", icon="🚨")
-                elif total >0 and art_count < 3:
-                    st.warning(f"Please, consider adding more unique articles as internal links.\n\n There is a total of {art_ucount} unique articles and a total of {art_count} URLs linked into this article.\n\n Here the links: {art_list}.", icon="⚠️")
+                if cta_count is not 0:
+                    total = art_ucount - cta_count
+                    if total <= 0:
+                        st.error(f"There's no internal linking in the article. Please, add relevant key content articles as internal links.", icon="🚨")
+                    elif total >0 and total < 3:
+                        st.warning(f"Please, consider adding more unique articles as internal links.\n\n There is a total of {total} non CTA unique articles and a total of {art_count} URLs linked into this article.\n\n Here are the links: {art_list}.", icon="⚠️")
+                    else:
+                        st.success(f"Internal linking nicely done!.\nThere is a total of {total} no CTA unique articles in the content and a total of {art_count} URLs linked into this article.\n Here the links: {art_list}.", icon="✅")                
                 else:
-                    st.success(f"Internal linking nicely done!.\nThere is a total of {total} unique articles and a total of {art_count} URLs linked into this article.\n Here the links: {art_list}.", icon="✅")
+                    if art_ucount < 1:
+                        st.error(f"There's no internal linking in the article. Please, add relevant key content articles as internal links.", icon="🚨")
+                    elif art_ucount > 0 and art_ucount < 3:
+                        st.warning(f"Please, consider adding more unique articles as internal links.\n\n There is a total of {art_ucount} unique articles and a total of {art_count} URLs linked into this article.\n\n Here the links: {art_list}.", icon="⚠️")
+                    else:
+                        st.success(f"Internal linking nicely done!.\nThere is a total of {total} unique articles and a total of {art_count} URLs linked into this article.\n Here the links: {art_list}.", icon="✅")
       
                 st.subheader("CTA Checker:")
                 cta_count,cta_list = check_cta(soup)
@@ -260,9 +268,9 @@ def main():
                 alt = get_featured_image_alt(soup)
                 if width is not None:
                     if width >= 1200:
-                        st.success(f"The featured image meets width requirements: {width}px.\n\nThe alt is {alt}", icon="✅")
+                        st.success(f"The featured image meets width requirements: {width}px.\n\nThe Alt is: '{alt}'", icon="✅")
                     else:
-                        st.warning(f"Remember: feature image must be at least 1200px wide.\n\nThe current featured image is {width}px wide.\n\nThe alt is {alt}", icon="⚠️")            
+                        st.warning(f"Remember: feature image must be at least 1200px wide.\n\nThe current featured image is {width}px wide.\n\nThe Alt is: '{alt}'", icon="⚠️")            
                 else:
                     st.error("The article has no featured image. Please add one of a minimum of 1200px wide.", icon="🚨")              
 
