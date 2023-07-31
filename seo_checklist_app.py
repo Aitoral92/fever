@@ -103,19 +103,19 @@ def get_total_image_count(soup):
             if len(img["alt"]) > 0:
                 alt_count += 1
                 alt_list.append(img["alt"])
-    except AttributeError:
-        img_count = 0
-        alt_count = 0
-        alt_list = []        
+       
     
     # Contar imagenes embedadas
-    try:    
+  
         for img in all_content.find_all('blockquote', class_=True):
             ig_count += 1
     except AttributeError:
+        img_count = 0
+        alt_count = 0
+        alt_list = []   
         ig_count = 0
+
     total=img_count+ig_count
-            
     
     return img_count, alt_count, alt_list, ig_count, total
 
