@@ -119,9 +119,10 @@ def main():
 
     if st.button("Analyze"):
         if url:
-            st.subheader("URL friendliness")
             get_url = requests.get(url)
             soup = BeautifulSoup(get_url.text, "html.parser")
+
+            st.subheader("URL friendliness")
             try:
                 hyphen_count, has_digit, url_len = count_hyphens_and_digits_in_url(url)
                 st.info(f"This is the URL:\n{url}", icon="👀")
@@ -152,11 +153,12 @@ def main():
                     st.success(f"SEO title is OPTIMIZED in length. It is {lenseot} characters long. Well done!\n\nSEO Title: '{seot}'", icon="✅")
             except Exception as e:
                 st.error("Error: Unable to analyze the URL. Please, check if it's valid.")
-
+            
+            st.subheader("Meta Description Length:")
             try:
                 # get_url = requests.get(url)
                 # soup = BeautifulSoup(get_url.text, "html.parser")                   
-                st.subheader("Meta Description Length:")
+    
                 metad, len_metad = get_meta_description_length(soup)
                 if len_metad < 120:
                     st.error(f"Meta Description is BELOW 120 characters. It is {len_metad} characters long.\n\nMeta Description: '{metad}'", icon="🚨" )
@@ -167,10 +169,11 @@ def main():
             except Exception as e:
                 st.error("Error: Unable to analyze the URL. Please, check if it's valid.")
 
+            st.subheader("Secondary Title Length:")
             try:
                 # get_url = requests.get(url)
                 # soup = BeautifulSoup(get_url.text, "html.parser")                    
-                st.subheader("Secondary Title Length:")
+    
                 secondary, len_secondary = get_secondary_title_length(soup)
                 if len_secondary < 120:
                     st.error(f"Secondary title is BELOW 120 characters. It is {len_secondary} characters long.\n\nSecondary Title:'{secondary}'", icon="🚨")
@@ -180,11 +183,12 @@ def main():
                     st.success(f"Secondary title is OPTIMIZED in length. It is {len_secondary} characters long. Well done!\n\nSecondary Title:'{secondary}'", icon="✅")
             except Exception as e:
                 st.error("Error: Unable to analyze the URL. Please, check if it's valid.")
-
+            
+            st.subheader("Internal Links:")
             try:
                 # get_url = requests.get(url)
                 # soup = BeautifulSoup(get_url.text, "html.parser")                       
-                st.subheader("Internal Links:")
+    
                 art_ucount, art_count, art_list = get_internal_links_count(soup, url)
                 cta_count,cta_list = check_cta(soup)
                 if cta_count is not 0:
@@ -207,10 +211,11 @@ def main():
             except Exception as e:
                 st.error("Error: Unable to analyze the URL. Please, check if it's valid.")
 
+            st.subheader("CTA Checker:")
             try:
                 # get_url = requests.get(url)
                 # soup = BeautifulSoup(get_url.text, "html.parser")                       
-                st.subheader("CTA Checker:")
+    
                 cta_count,cta_list = check_cta(soup)
                 if cta_count > 0:
                     st.success(f"There is a CTA: {cta_list}", icon="✅")
@@ -227,10 +232,11 @@ def main():
             except Exception as e:
                 st.error("Error: Unable to analyze the URL. Please, check if it's valid.")                
 
+            st.subheader("Categories Count:")
             try:
                 # get_url = requests.get(url)
                 # soup = BeautifulSoup(get_url.text, "html.parser") 
-                st.subheader("Categories Count:")
+    
                 cat_ucount, cat_count = get_categories_count(soup)
                 if cat_count < 1:
                     st.error("There are no categories. Please, add a max of two categories.", icon="🚨")
@@ -241,10 +247,11 @@ def main():
             except Exception as e:
                 st.error("Error: Unable to analyze the URL. Please, check if it's valid.") 
 
+            st.subheader("Featured Image Size and Alt:") 
             try:
                 # get_url = requests.get(url)
                 # soup = BeautifulSoup(get_url.text, "html.parser")                                 
-                st.subheader("Featured Image Size and Alt:")                
+                   
                 width = get_featured_image_width(soup)
                 alt = get_featured_image_alt(soup)
                 if width is not None:
@@ -256,11 +263,12 @@ def main():
                     st.error("The article has no featured image. Please add one of a minimum of 1200px wide.", icon="🚨")              
             except Exception as e:
                 st.error("Error: Unable to analyze the URL. Please, check if it's valid.")   
-
+            
+            st.subheader("Images in content:")
             try:
                 # get_url = requests.get(url)
                 # soup = BeautifulSoup(get_url.text, "html.parser") 
-                st.subheader("Images in content:")
+
                 img_count, alt_count, alt_list, ig_count, total = get_total_image_count(soup)
                 
                 if ig_count is not 0 and img_count <=1:
