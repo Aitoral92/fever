@@ -94,23 +94,30 @@ def get_total_image_count(soup):
     ig_count = 0
 
     # Contar imagenes normales
-    for img in all_content.find_all('img', alt=True):
-        # Verificar si la etiqueta 'img' tiene la clase "emoji" o está dentro de <noscript></noscript>
-        if "emoji" in img.get("class", []) or img.find_parent("noscript"):
-            continue  # Ignorar esta etiqueta 'img' y pasar a la siguiente
-        img_count += 1
-        if len(img["alt"]) > 0:
-            alt_count += 1
-            alt_list.append(img["alt"])
+    try:
+        for img in all_content.find_all('img', alt=True):
+            # Verificar si la etiqueta 'img' tiene la clase "emoji" o está dentro de <noscript></noscript>
+            if "emoji" in img.get("class", []) or img.find_parent("noscript"):
+                continue  # Ignorar esta etiqueta 'img' y pasar a la siguiente
+            img_count += 1
+            if len(img["alt"]) > 0:
+                alt_count += 1
+                alt_list.append(img["alt"])
+    except AttributeError:
+        img_count = 0
+        alt_count = 0
+        alt_list = []        
     
     # Contar imagenes embedadas
-    for img in all_content.find_all('blockquote', class_=True):
-        ig_count += 1
-
+    try:    
+        for img in all_content.find_all('blockquote', class_=True):
+            ig_count += 1
+    except AttributeError:
+        ig_count = 0
     total=img_count+ig_count
+            
     
     return img_count, alt_count, alt_list, ig_count, total
-
 
 def main():
     st.title("SEO Checklist Analyzer")
@@ -174,7 +181,7 @@ def main():
                         st.warning(f"Please, consider adding more unique articles as internal links.\n\n There is a total of {total} unique articles and a total of {art_count} URLs (one being the CTA) linked into this article.\n\n Here are the links: {art_list}.", icon="⚠️")
                     else:
                         if total > 3:
-                            st.success(f"Internal linking nicely done!.\nThere is a total of {total} no CTA unique articles in the content and a total of {art_count} URLs linked into this article.\n Here the links: {art_list}.", icon="✅")                
+                            st.success(f"Internal linking nicely done!\nThere is a total of {total} no CTA unique articles in the content and a total of {art_count} URLs linked into this article.\n Here the links: {art_list}.", icon="✅")                
                 else:
                     if art_ucount < 1:
                         st.error(f"There's no internal linking in the article. Please, add relevant key content articles as internal links.", icon="🚨")
