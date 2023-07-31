@@ -94,27 +94,21 @@ def get_total_image_count(soup):
     ig_count = 0
 
     # Contar imagenes normales
-    try:
-        for img in all_content.find_all('img', alt=True):
-            # Verificar si la etiqueta 'img' tiene la clase "emoji" o está dentro de <noscript></noscript>
-            if "emoji" in img.get("class", []) or img.find_parent("noscript"):
-                continue  # Ignorar esta etiqueta 'img' y pasar a la siguiente
-            img_count += 1
-            if len(img["alt"]) > 0:
-                alt_count += 1
-                alt_list.append(img["alt"])
+
+    for img in all_content.find_all('img', alt=True):
+        # Verificar si la etiqueta 'img' tiene la clase "emoji" o está dentro de <noscript></noscript>
+        if "emoji" in img.get("class", []) or img.find_parent("noscript"):
+            continue  # Ignorar esta etiqueta 'img' y pasar a la siguiente
+        img_count += 1
+        if len(img["alt"]) > 0:
+            alt_count += 1
+            alt_list.append(img["alt"])
        
     
     # Contar imagenes embedadas
   
-        for img in all_content.find_all('blockquote', class_=True):
-            ig_count += 1
-    except AttributeError:
-        img_count = 0
-        alt_count = 0
-        alt_list = []   
-        ig_count = 0
-
+    for img in all_content.find_all('blockquote', class_=True):
+        ig_count += 1
     total=img_count+ig_count
     
     return img_count, alt_count, alt_list, ig_count, total
