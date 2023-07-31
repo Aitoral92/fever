@@ -120,11 +120,9 @@ def main():
     if st.button("Analyze"):
         if url:
             st.subheader("URL friendliness")
+            get_url = requests.get(url)
+            soup = BeautifulSoup(get_url.text, "html.parser")
             try:
-                get_url = requests.get(url)
-                soup = BeautifulSoup(get_url.text, "html.parser")
-
-                
                 hyphen_count, has_digit, url_len = count_hyphens_and_digits_in_url(url)
                 st.info(f"This is the URL:\n{url}", icon="👀")
                 if hyphen_count > 3:
@@ -141,8 +139,8 @@ def main():
             
             st.subheader("SEO Title Length:")
             try:
-                get_url = requests.get(url)
-                soup = BeautifulSoup(get_url.text, "html.parser")                                
+                # get_url = requests.get(url)
+                # soup = BeautifulSoup(get_url.text, "html.parser")                                
                 
                 seot, lenseot = get_seo_title_length(soup)
                 if lenseot < 50:
@@ -156,8 +154,8 @@ def main():
                 st.error("Error: Unable to analyze the URL. Please, check if it's valid.")
 
             try:
-                get_url = requests.get(url)
-                soup = BeautifulSoup(get_url.text, "html.parser")                   
+                # get_url = requests.get(url)
+                # soup = BeautifulSoup(get_url.text, "html.parser")                   
                 st.subheader("Meta Description Length:")
                 metad, len_metad = get_meta_description_length(soup)
                 if len_metad < 120:
@@ -170,8 +168,8 @@ def main():
                 st.error("Error: Unable to analyze the URL. Please, check if it's valid.")
 
             try:
-                get_url = requests.get(url)
-                soup = BeautifulSoup(get_url.text, "html.parser")                    
+                # get_url = requests.get(url)
+                # soup = BeautifulSoup(get_url.text, "html.parser")                    
                 st.subheader("Secondary Title Length:")
                 secondary, len_secondary = get_secondary_title_length(soup)
                 if len_secondary < 120:
@@ -184,8 +182,8 @@ def main():
                 st.error("Error: Unable to analyze the URL. Please, check if it's valid.")
 
             try:
-                get_url = requests.get(url)
-                soup = BeautifulSoup(get_url.text, "html.parser")                       
+                # get_url = requests.get(url)
+                # soup = BeautifulSoup(get_url.text, "html.parser")                       
                 st.subheader("Internal Links:")
                 art_ucount, art_count, art_list = get_internal_links_count(soup, url)
                 cta_count,cta_list = check_cta(soup)
@@ -210,8 +208,8 @@ def main():
                 st.error("Error: Unable to analyze the URL. Please, check if it's valid.")
 
             try:
-                get_url = requests.get(url)
-                soup = BeautifulSoup(get_url.text, "html.parser")                       
+                # get_url = requests.get(url)
+                # soup = BeautifulSoup(get_url.text, "html.parser")                       
                 st.subheader("CTA Checker:")
                 cta_count,cta_list = check_cta(soup)
                 if cta_count > 0:
@@ -230,8 +228,8 @@ def main():
                 st.error("Error: Unable to analyze the URL. Please, check if it's valid.")                
 
             try:
-                get_url = requests.get(url)
-                soup = BeautifulSoup(get_url.text, "html.parser") 
+                # get_url = requests.get(url)
+                # soup = BeautifulSoup(get_url.text, "html.parser") 
                 st.subheader("Categories Count:")
                 cat_ucount, cat_count = get_categories_count(soup)
                 if cat_count < 1:
@@ -244,8 +242,8 @@ def main():
                 st.error("Error: Unable to analyze the URL. Please, check if it's valid.") 
 
             try:
-                get_url = requests.get(url)
-                soup = BeautifulSoup(get_url.text, "html.parser")                                 
+                # get_url = requests.get(url)
+                # soup = BeautifulSoup(get_url.text, "html.parser")                                 
                 st.subheader("Featured Image Size and Alt:")                
                 width = get_featured_image_width(soup)
                 alt = get_featured_image_alt(soup)
@@ -260,8 +258,8 @@ def main():
                 st.error("Error: Unable to analyze the URL. Please, check if it's valid.")   
 
             try:
-                get_url = requests.get(url)
-                soup = BeautifulSoup(get_url.text, "html.parser") 
+                # get_url = requests.get(url)
+                # soup = BeautifulSoup(get_url.text, "html.parser") 
                 st.subheader("Images in content:")
                 img_count, alt_count, alt_list, ig_count, total = get_total_image_count(soup)
                 
