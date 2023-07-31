@@ -225,11 +225,11 @@ def main():
         
                 if width is not None:
                     if width >= 1200:
-                        print("La imagen destacada es del tamaño adecuado: {}".format(width))
+                        st.success(f"La imagen destacada es del tamaño adecuado: {width}px", icon="✅")
                     else:
-                        print("La imagen destacada es de {}px de ancho y debe tener de mínimo 1200px.".format(width))            
+                        st.warning(f"La imagen destacada es de {width}px de ancho y debe tener de mínimo 1200px.", icon="⚠️")            
                 else:
-                    print("El artículo no tiene imagen destacada. Por favor, añade una con un ancho mínimo de 1200px.")              
+                    st.error("El artículo no tiene imagen destacada. Por favor, añade una con un ancho mínimo de 1200px.", icon="🚨")              
 
 
             except Exception as e:
