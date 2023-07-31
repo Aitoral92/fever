@@ -126,8 +126,8 @@ def main():
             try:
                 hyphen_count, has_digit, url_len = count_hyphens_and_digits_in_url(url)
                 st.info(f"This is the URL:\n{url}", icon="👀")
-                if hyphen_count > 3:
-                    st.warning(f"The URL seems to be too long (it is {url_len} characters long), consider shorten it.", icon="⚠️")
+                if hyphen_count > 4:
+                    st.warning(f"The URL seems to be too long, consider shorten it.", icon="⚠️")
                 else:
                     st.success(f"The URL looks fine in terms of length.", icon="✅")
 
@@ -200,7 +200,9 @@ def main():
                         st.warning(f"Please, consider adding more unique articles as internal links.\n\n There is a total of {total} unique articles and a total of {art_count} URLs (one being the CTA) linked into this article.\n\n Here are the links: {art_list}.", icon="⚠️")
                     else:
                         if total > 3:
-                            st.success(f"Internal linking nicely done!\nThere is a total of {total} no CTA unique articles in the content and a total of {art_count} URLs linked into this article.\n Here the links: {art_list}.", icon="✅")                
+                            st.success(f"Internal linking nicely done!\nThere is a total of {total} no CTA unique articles in the content and a total of {art_count} URLs linked into this article. Here the links: {art_list}.", icon="✅") 
+                            with st.expander ("See the links:", icon="👀"):
+                                (f"{art_list}.")                                            
                 else:
                     if art_ucount < 1:
                         st.error(f"There's no internal linking in the article. Please, add relevant key content articles as internal links.", icon="🚨")
