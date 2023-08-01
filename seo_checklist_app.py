@@ -268,8 +268,8 @@ def main():
             
             st.subheader("Images in content:")
             
-            # get_url = requests.get(url)
-            # soup = BeautifulSoup(get_url.text, "html.parser") 
+            get_url = requests.get(url)
+            soup = BeautifulSoup(get_url.text, "html.parser") 
 
             img_count, alt_count, alt_list, ig_count, total = get_total_image_count(soup)
                 
