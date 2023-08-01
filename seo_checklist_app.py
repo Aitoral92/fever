@@ -88,6 +88,7 @@ def get_featured_image_alt(soup):
 def get_total_image_count(soup):
     all_content = soup.find("section", class_="article__body col-md-8")
 
+
     img_count = 0
     alt_count = 0
     alt_list = []
@@ -109,6 +110,7 @@ def get_total_image_count(soup):
   
     for img in all_content.find_all('blockquote', class_=True):
         ig_count += 1
+    
     total=img_count+ig_count
     
     return img_count, alt_count, alt_list, ig_count, total
@@ -271,7 +273,7 @@ def main():
 
                 img_count, alt_count, alt_list, ig_count, total = get_total_image_count(soup)
                 
-                if ig_count is not 0 and img_count <=1:
+                if img_count <=1 and ig_count is not 0:
                     st.error(f"All the images (except for the featured one) are Instagram embededs. Please, add real images instead.", icon="🚨")
 
                 elif img_count > 1:    
