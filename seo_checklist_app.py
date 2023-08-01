@@ -199,7 +199,7 @@ def main():
                     if total <= 0:
                         st.warning(f"If this is a Fever branded article, please do not mind this alert, as internal linking is not applied.", icon="⚠️")
                         st.error(f"There's no internal linking in the article. Please, add relevant key content articles as internal links.", icon="🚨") 
-                    elif total >0 and total < 3:
+                    elif total > 0 and total <= 3:
                         st.warning(f"Please, consider adding more unique articles as internal links.\n\n There is a total of {total} unique articles and a total of {art_count} URLs (one being the CTA) linked into this article.\n\n Here are the links: {art_list}.", icon="⚠️")
                     else:
                         if total > 3:
