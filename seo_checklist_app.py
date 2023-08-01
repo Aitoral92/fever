@@ -267,26 +267,25 @@ def main():
                 st.error("Error: Unable to analyze the URL. Please, check if it's valid.")   
             
             st.subheader("Images in content:")
-            try:
-                # get_url = requests.get(url)
-                # soup = BeautifulSoup(get_url.text, "html.parser") 
+            
+            # get_url = requests.get(url)
+            # soup = BeautifulSoup(get_url.text, "html.parser") 
 
-                img_count, alt_count, alt_list, ig_count, total = get_total_image_count(soup)
+            img_count, alt_count, alt_list, ig_count, total = get_total_image_count(soup)
                 
-                if img_count <=1 and ig_count is not 0:
-                    st.error(f"All the images (except for the featured one) are Instagram embededs. Please, add real images instead.", icon="🚨")
+            if img_count <=1 and ig_count is not 0:
+                st.error(f"All the images (except for the featured one) are Instagram embededs. Please, add real images instead.", icon="🚨")
 
-                elif img_count > 1:    
-                    if ig_count is 0:
-                        if alt_count == img_count:
-                            st.success(f"There is a total of {img_count} images, from which all of them have an alt.\n\nThis are the alts:{alt_list}", icon="✅")
-                        else:
-                            st.warning(f"There is a total of {img_count} images, from which {img_count-alt_count} have no alt.\n\nPlease, add an Alt to the images.", icon="⚠️")
-                else:
-                    st.warning(f"There is a total of {total} images, from which {ig_count} are embeded from Instagram. Please, try not to use embeded images.", icon="⚠️")
-                    st.warning(f"From those {total} images, {img_count-alt_count} have no alt. Please, add an alt to the images.", icon="⚠️")
-            except Exception as e:
-                st.error("Error: Unable to analyze the URL. Please, check if it's valid.")
+            elif img_count > 1:    
+                if ig_count is 0:
+                    if alt_count == img_count:
+                        st.success(f"There is a total of {img_count} images, from which all of them have an alt.\n\nThis are the alts:{alt_list}", icon="✅")
+                    else:
+                        st.warning(f"There is a total of {img_count} images, from which {img_count-alt_count} have no alt.\n\nPlease, add an Alt to the images.", icon="⚠️")
+            else:
+                st.warning(f"There is a total of {total} images, from which {ig_count} are embeded from Instagram. Please, try not to use embeded images.", icon="⚠️")
+                st.warning(f"From those {total} images, {img_count-alt_count} have no alt. Please, add an alt to the images.", icon="⚠️")
+            
         else:
             st.warning("Please enter a valid URL.")
 
