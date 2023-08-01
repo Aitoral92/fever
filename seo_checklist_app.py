@@ -193,9 +193,8 @@ def main():
     
                 art_ucount, art_count, art_list = get_internal_links_count(soup, url)
                 cta_count,cta_list = check_cta(soup)
-                if cta_count is None:
-                    cta_count=0
-                if cta_count is not 0:
+
+                if cta_count is not None:
                     total = art_ucount - cta_count
                     if total <= 0:
                         st.warning(f"If this is a Fever branded article, please do not mind this alert, as internal linking is not applied.", icon="⚠️")
