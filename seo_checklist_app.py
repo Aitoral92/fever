@@ -39,7 +39,7 @@ def get_internal_links_count(soup, base_url):
         if parsed_link.netloc == base_domain and "/wp-content/" not in parsed_link.path:
             art_count += 1
             art_list.append(link)
-
+    art_list = [*set(art_list)]
     art_ucount = len(set(art_list))
     return art_ucount, art_count, art_list
 
@@ -128,7 +128,7 @@ def main():
             try:
                 hyphen_count, has_digit, url_len = count_hyphens_and_digits_in_url(url)
                 st.info(f"This is the URL:\n{url}", icon="👀")
-                if hyphen_count > 4:
+                if hyphen_count > 6:
                     st.warning(f"The URL seems to be too long, consider shorten it.", icon="⚠️")
                 else:
                     st.success(f"The URL looks fine in terms of length.", icon="✅")
@@ -148,11 +148,11 @@ def main():
                 seot, lenseot = get_seo_title_length(soup)
                 if lenseot < 50:
                     st.error(f"SEO title is BELOW 50 characters. It is {lenseot} characters long.\n\nSEO Title: '{seot}'", icon="🚨" )
-                elif lenseot > 60:
-                    st.error(f"SEO title is OVER 60 characters. It is {lenseot} characters long.\n\nSEO Title: '{seot}'", icon="🚨")
+                elif lenseot > 65:
+                    st.error(f"SEO title is a bit too long. Please, shorten it.\n\nSEO Title: '{seot}'", icon="🚨")
                     st.warning(f"If this is a 'News' kind of article and not an Evergreen/Roundup, the SEO Title can be longer for editorial purposes", icon="⚠️")
                 else:
-                    st.success(f"SEO title is OPTIMIZED in length. It is {lenseot} characters long. Well done!\n\nSEO Title: '{seot}'", icon="✅")
+                    st.success(f"SEO title is OPTIMIZED in length, well done!\n\nSEO Title: '{seot}'", icon="✅")
             except Exception as e:
                 st.error("Error: Unable to analyze the URL. Please, check if it's valid.")
             
@@ -282,8 +282,11 @@ def main():
                 else:
                     st.warning(f"There is a total of {img_count} images, from which {img_count-alt_count} have no alt.\n\nPlease, add an Alt to the images.", icon="⚠️")
             elif img_count > 1 and ig_count > 0:
-                st.warning(f"There is a total of {total} images, from which {ig_count} are embeded from Instagram. Please, try not to use embeded images.", icon="⚠️")
-                st.warning(f"From those {img_count} real images, {img_count-alt_count} have no alt. Please, add an alt to the images.", icon="⚠️")
+                if alt_count == img_count:
+                    st.success(f"There is a total of {total} images, from which {ig_count} are embeded from Instagram.  all of them have an alt.\n\nThis are the alts:{alt_list}", icon="✅")
+                else:
+                    st.warning(f"There is a total of {total} images, from which {ig_count} are embeded from Instagram.\n\nFrom those {img_count} real images, all of them have an alt.", icon="✅")
+                    st.warning(f"From those {img_count} real images, {img_count-alt_count} have no alt. Please, add an alt to the images.", icon="⚠️")
             else:
                 st.error(f"There is no images throughout the content. Please, add images.", icon="🚨")
         else:
