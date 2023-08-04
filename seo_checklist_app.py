@@ -29,7 +29,7 @@ def get_internal_links_count(soup, base_url):
     soup_copy = BeautifulSoup(str(soup), "html.parser")
     all_content = soup_copy.find("section", class_="article__body col-md-8")
     art_count = 0
-    art_list = set()
+    art_list = []
 
     base_domain = urlparse(base_url).netloc
 
