@@ -37,10 +37,21 @@ def get_internal_links_count(soup, base_url):
         link = a['href']
         parsed_link = urlparse(link)
         if parsed_link.netloc == base_domain and "/wp-content/" not in parsed_link.path:
-            art_count += 1
-            art_list.add(link)
+            # Check if the URL already exists in art_list
+            url_exists = False
+            for existing_url in art_list:
+                if existing_url == link:
+                    url_exists = True
+                    break
+
+            if not url_exists:
+                art_count += 1
+                art_list.append(link)
+
+            # art_count += 1
+            # art_list.add(link)
     
-    art_list = list(art_list)  # Convert to set and back to list to remove duplicates
+    # art_list = list(art_list)  # Convert to set and back to list to remove duplicates
     art_ucount = len(art_list)
     return art_ucount, art_count, art_list
 
@@ -204,7 +215,7 @@ def main():
                         st.warning(f"Please, consider adding more unique articles as internal links.\n\n There is a total of {total} unique articles and a total of {art_count} URLs (one being the CTA) linked into this article.\n\n Here are the links: {art_list}.", icon="⚠️")
                     else:
                         if total > 3:
-                            st.success(f"Internal linking nicely done!\nThere is a total of {total} no CTA unique articles in the content and a total of {art_count} URLs linked into this article.\n\n Here the links: {art_list}.", icon="✅")                
+                            st.success(f"Internal linking nicely done!\nThere is a total of {total} no CTA unique articles in the content and a total of {art_count} URLs linked into this article.\n\nHere the links: {art_list}.", icon="✅")                
                 else:
                     if art_ucount < 1:
                         st.error(f"There's no internal linking in the article. Please, add relevant key content articles as internal links.", icon="🚨")
