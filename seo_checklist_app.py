@@ -40,7 +40,7 @@ def get_internal_links_count(soup, base_url):
             art_count += 1
             art_list.append(link)
     
-    art_list = list(set(art_list))  # Convert to set and back to list to remove duplicates
+    # art_list = list(set(art_list))  # Convert to set and back to list to remove duplicates
     art_ucount = len(set(art_list))
     return art_ucount, art_count, art_list
 
@@ -194,7 +194,7 @@ def main():
     
                 art_ucount, art_count, art_list = get_internal_links_count(soup, url)
                 cta_count,cta_list = check_cta(soup)
-
+                art_list = list(set(art_list))  # Convert to set and back to list to remove duplicates
                 if cta_count is not None:
                     total = art_ucount - cta_count
                     if total <= 0:
