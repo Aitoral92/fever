@@ -190,11 +190,12 @@ def main():
     
                 secondary, len_secondary = get_secondary_title_length(soup)
                 if len_secondary < 120:
-                    st.error(f"Secondary title is BELOW 120 characters. It is {len_secondary} characters long.\n\nSecondary Title:'{secondary}'", icon="🚨")
-                elif len_secondary > 180:
-                    st.error(f"Secondary title is OVER 180 characters. It is {len_secondary} characters long.\n\nSecondary Title:'{secondary}'", icon="🚨")
+                    st.warning(f"Secondary title seems to be too short. Please check if its length is between one line and a half and two lines.\n\nThis is the Secondary Title:'{secondary}'", icon="⚠️")
+                elif len_secondary > 210:
+                    st.warning(f"Secondary title seems to be too long. Please check if its length is between one line and a half and two lines.\n\nThis is the Secondary Title:'{secondary}'", icon="⚠️")
                 else:
-                    st.success(f"Secondary title is OPTIMIZED in length. It is {len_secondary} characters long. Well done!\n\nSecondary Title:'{secondary}'", icon="✅")
+                    if len_secondary > 120 and len_secondary < 190:
+                        st.success(f"Looks like Secondary Title is OPTIMIZED in length. Well done!\n\nSecondary Title:'{secondary}'", icon="✅")
             except Exception as e:
                 st.error("Error: Unable to analyze the URL. Please, check if it's valid.")
             
