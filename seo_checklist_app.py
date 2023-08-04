@@ -39,7 +39,8 @@ def get_internal_links_count(soup, base_url):
         if parsed_link.netloc == base_domain and "/wp-content/" not in parsed_link.path:
             art_count += 1
             art_list.append(link)
-    art_list = [*set(art_list)]
+    
+    art_list = list(set(art_list))  # Convert to set and back to list to remove duplicates
     art_ucount = len(set(art_list))
     return art_ucount, art_count, art_list
 
