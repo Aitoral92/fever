@@ -3,6 +3,7 @@ import requests
 from bs4 import BeautifulSoup
 from collections import Counter
 from urllib.parse import urlparse
+import json
 
 def count_hyphens_and_digits_in_url(url):
     hyphen_count = url.count("-")
@@ -83,11 +84,27 @@ def get_categories_count(soup):
     return cat_ucount, cat_count
 
 def get_featured_image_width(soup):
-    ft_img_width = soup.find("meta", property="og:image:width")
-    if ft_img_width and 'content' in ft_img_width.attrs:
-        return int(ft_img_width['content'])
-    else:
-        return None
+    # ft_img_width = soup.find("meta", property="og:image:width")
+    # if ft_img_width and 'content' in ft_img_width.attrs:
+    #     return int(ft_img_width['content'])
+    # else:
+    #     return None
+    ft_img = soup.find("meta", property="og:image")
+
+    if ft_img and 'content' in ft_img.attrs:
+        print("El artículo tiene una imagen destacada.")
+        # Encontrar el script con tipo "application/ld+json"
+        script = soup.find('script', type='application/ld+json')
+
+        # Extraer el contenido JSON del script
+        data = script.string
+
+        # Analizar el JSON
+        json_data = json.loads(data)
+
+        # Extraer el valor del "width"
+        width_value = json_data['image']['width']
+        return width_value
 
 def get_featured_image_alt(soup):
     all_content = soup.find("section", class_="article__body col-md-8")
@@ -195,7 +212,7 @@ def main():
                     st.warning(f"Secondary title seems to be too long. Please check if its length is between one line and a half and two lines.\n\nThis is the Secondary Title:'{secondary}'", icon="⚠️")
                 else:
                     if len_secondary > 120 and len_secondary < 190:
-                        st.success(f"Looks like Secondary Title is OPTIMIZED in length. Well done!\n\nSecondary Title:'{secondary}'", icon="✅")
+                        st.success(f"Looks like Secondary Title is OPTIMIZED in length. Well done!\n\nSecondary Title: '{secondary}'", icon="✅")
             except Exception as e:
                 st.error("Error: Unable to analyze the URL. Please, check if it's valid.")
             
