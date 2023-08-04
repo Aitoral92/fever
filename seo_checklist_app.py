@@ -29,7 +29,7 @@ def get_internal_links_count(soup, base_url):
     soup_copy = BeautifulSoup(str(soup), "html.parser")
     all_content = soup_copy.find("section", class_="article__body col-md-8")
     art_count = 0
-    art_list = []
+    art_list = set()
 
     base_domain = urlparse(base_url).netloc
 
@@ -38,10 +38,10 @@ def get_internal_links_count(soup, base_url):
         parsed_link = urlparse(link)
         if parsed_link.netloc == base_domain and "/wp-content/" not in parsed_link.path:
             art_count += 1
-            art_list.append(link)
+            art_list.add(link)
     
-    # art_list = list(set(art_list))  # Convert to set and back to list to remove duplicates
-    art_ucount = len(set(art_list))
+    art_list = list(art_list)  # Convert to set and back to list to remove duplicates
+    art_ucount = len(art_list)
     return art_ucount, art_count, art_list
 
 def check_cta(soup):
@@ -194,7 +194,7 @@ def main():
     
                 art_ucount, art_count, art_list = get_internal_links_count(soup, url)
                 cta_count,cta_list = check_cta(soup)
-                art_list = list(set(art_list))  # Convert to set and back to list to remove duplicates
+                
                 if cta_count is not None:
                     total = art_ucount - cta_count
                     if total <= 0:
