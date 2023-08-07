@@ -84,27 +84,27 @@ def get_categories_count(soup):
     return cat_ucount, cat_count
 
 def get_featured_image_width(soup):
-    # ft_img_width = soup.find("meta", property="og:image:width")
-    # if ft_img_width and 'content' in ft_img_width.attrs:
-    #     return int(ft_img_width['content'])
-    # else:
-    #     return None
-    ft_img = soup.find("meta", property="og:image")
+    ft_img_width = soup.find("meta", property="og:image:width")
+    if ft_img_width and 'content' in ft_img_width.attrs:
+        return int(ft_img_width['content'])
+    else:
+        return None
+    # ft_img = soup.find("meta", property="og:image")
 
-    if ft_img and 'content' in ft_img.attrs:
-        print("El artículo tiene una imagen destacada.")
-        # Encontrar el script con tipo "application/ld+json"
-        script = soup.find('script', type='application/ld+json')
+    # if ft_img and 'content' in ft_img.attrs:
+    #     print("El artículo tiene una imagen destacada.")
+    #     # Encontrar el script con tipo "application/ld+json"
+    #     script = soup.find('script', type='application/ld+json')
 
-        # Extraer el contenido JSON del script
-        data = script.string
+    #     # Extraer el contenido JSON del script
+    #     data = script.string
 
-        # Analizar el JSON
-        json_data = json.loads(data)
+    #     # Analizar el JSON
+    #     json_data = json.loads(data)
 
-        # Extraer el valor del "width"
-        width_value = json_data['image']['width']
-        return width_value
+    #     # Extraer el valor del "width"
+    #     width_value = json_data['image']['width']
+    #     return width_value
 
 def get_featured_image_alt(soup):
     all_content = soup.find("section", class_="article__body col-md-8")
