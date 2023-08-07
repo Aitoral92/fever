@@ -100,7 +100,7 @@ def get_featured_image_width(soup):
             json_data = json.loads(data)
 
             # Extraer el valor del "width"
-            width_value = json_data['thumbnail']['width']
+            width_value = json_data['@graph'][0]['thumbnail']['width']
             return width_value
 
     # ft_img_width = soup.find("meta", property="og:image:width")
