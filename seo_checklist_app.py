@@ -133,25 +133,19 @@ def get_featured_image_width(soup):
         og_width = int(ft_img_width_meta['content'])
         if og_width >= 1200:
             return og_width
-    
-    # Si no se encuentra o es menor de 1200, intentar obtenerlo desde el JSON
-    ft_img_meta = soup.find("meta", property="og:image")
-    if ft_img_meta and 'content' in ft_img_meta.attrs:
-        # Obtener el contenido del atributo "content"
-        img_url = ft_img_meta['content']
-        
-        # Asegurarse de que el contenido sea válido para un URL JSON
-        try:
-            img_json_data = json.loads(img_url)
-            if 'image' in img_json_data and 'width' in img_json_data['image']:
-                json_width = int(img_json_data['image']['width'])
-                return max(og_width, json_width) if og_width else json_width
-        except json.JSONDecodeError:
-            pass
+        else:
+        # Encontrar el script con tipo "application/ld+json"
+            script = soup.find('script', type='application/ld+json')
 
-    # Si no se puede obtener el ancho de ninguna de las fuentes válidas, devolver None
-    return None
+            # Extraer el contenido JSON del script
+            data = script.string
 
+            # Analizar el JSON
+            json_data = json.loads(data)
+
+            # Extraer el valor del "width"
+            width_value = json_data['image']['width']
+            return width_value
 
 
 def get_featured_image_alt(soup):
