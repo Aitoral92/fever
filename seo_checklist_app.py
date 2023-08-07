@@ -84,6 +84,25 @@ def get_categories_count(soup):
     return cat_ucount, cat_count
 
 def get_featured_image_width(soup):
+
+    # Obtener el ancho de la imagen desde "og:image:width"
+    ft_img_width_meta = soup.find("meta", property="og:image:width")
+    script = soup.find('script', type='application/ld+json')
+    if ft_img_width_meta and 'content' in ft_img_width_meta.attrs:
+        og_width = int(ft_img_width_meta['content'])
+        if og_width >= 1200:
+            return og_width
+        else:
+            # Extraer el contenido JSON del script
+            data = script.string
+
+            # Analizar el JSON
+            json_data = json.loads(data)
+
+            # Extraer el valor del "width"
+            width_value = json_data['thumbnail']['width']
+            return width_value
+
     # ft_img_width = soup.find("meta", property="og:image:width")
     # if ft_img_width and 'content' in ft_img_width.attrs:
     #     return int(ft_img_width['content'])
@@ -126,26 +145,6 @@ def get_featured_image_width(soup):
     #         pass
     
     # return None
-
-    # Obtener el ancho de la imagen desde "og:image:width"
-    ft_img_width_meta = soup.find("meta", property="og:image:width")
-    if ft_img_width_meta and 'content' in ft_img_width_meta.attrs:
-        og_width = int(ft_img_width_meta['content'])
-        if og_width >= 1200:
-            return og_width
-        else:
-        # Encontrar el script con tipo "application/ld+json"
-            script = soup.find('script', type='application/ld+json')
-
-            # Extraer el contenido JSON del script
-            data = script.string
-
-            # Analizar el JSON
-            json_data = json.loads(data)
-
-            # Extraer el valor del "width"
-            width_value = json_data['image']['width']
-            return width_value
 
 
 def get_featured_image_alt(soup):
