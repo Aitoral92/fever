@@ -103,50 +103,6 @@ def get_featured_image_width(soup):
             width_value = json_data['@graph'][0]['thumbnail']['width']
             return width_value
 
-    # ft_img_width = soup.find("meta", property="og:image:width")
-    # if ft_img_width and 'content' in ft_img_width.attrs:
-    #     return int(ft_img_width['content'])
-    # else:
-    #     return None
-    # ft_img = soup.find("meta", property="og:image")
-
-    # if ft_img and 'content' in ft_img.attrs:
-    #     print("El artículo tiene una imagen destacada.")
-    #     # Encontrar el script con tipo "application/ld+json"
-    #     script = soup.find('script', type='application/ld+json')
-
-    #     # Extraer el contenido JSON del script
-    #     data = script.string
-
-    #     # Analizar el JSON
-    #     json_data = json.loads(data)
-
-    #     # Extraer el valor del "width"
-    #     width_value = json_data['image']['width']
-    #     return width_value
-
-    # Obtener el ancho de la imagen desde "og:image"
-    # ft_img_width = soup.find("meta", property="og:image:width")
-    # if ft_img_width and 'content' in ft_img_width.attrs:
-    #     og_width = int(ft_img_width['content'])
-    #     if og_width >= 1200:
-    #         return og_width
-    
-    # # Obtener el JSON
-    # script = soup.find('script', type='application/ld+json')
-    # if script and script.string:
-    #     try:
-    #         json_data = json.loads(script.string)
-    #         # Obtener el ancho del JSON
-    #         json_width = json_data['image']['width']
-    #         if json_width >= 1200:
-    #             return json_width
-    #     except json.JSONDecodeError:
-    #         pass
-    
-    # return None
-
-
 def get_featured_image_alt(soup):
     all_content = soup.find("section", class_="article__body col-md-8")
     alt_text = all_content.find("img", alt=True)
@@ -157,7 +113,6 @@ def get_featured_image_alt(soup):
 
 def get_total_image_count(soup):
     all_content = soup.find("section", class_="article__body col-md-8")
-
 
     img_count = 0
     alt_count = 0
@@ -196,19 +151,19 @@ def main():
 
             st.subheader("URL friendliness")
             try:
-                hyphen_count, has_digit, url_len = count_hyphens_and_digits_in_url(url)
+                hyphen_count, has_digit = count_hyphens_and_digits_in_url(url)
                 st.info(f"This is the URL:\n{url}", icon="👀")
                 if hyphen_count > 6:
-                    st.warning(f"The URL seems to be too long, consider shorten it.", icon="⚠️")
+                    st.warning(f"The URL seems to be too long. Consider shortening it.", icon="⚠️")
                 else:
                     st.success(f"The URL looks fine in terms of length.", icon="✅")
 
                 if has_digit:
-                    st.warning("The URL doesn't seem very SEO friendly. Consider removing the number if it is not needed.", icon="⚠️")
+                    st.warning("The URL doesn't seem very SEO friendly. Consider removing any numbers if they are not necessary.", icon="⚠️")
                 else:
                     st.success(f"The URL is fine in terms of SEO friendliness.", icon="✅")
             except Exception as e:
-                st.error("Error: Unable to analyze the URL. Please, check if it's valid.")
+                st.error("Error: Unable to analyze the URL. Please check that it's valid.")
             
             st.subheader("SEO Title Length:")
             try:
@@ -217,14 +172,14 @@ def main():
                 
                 seot, lenseot = get_seo_title_length(soup)
                 if lenseot < 50:
-                    st.error(f"SEO title is BELOW 50 characters. It is {lenseot} characters long.\n\nSEO Title: '{seot}'", icon="🚨" )
+                    st.error(f"SEO title is BELOW 50 characters. It is {lenseot} characters long.\n\nCurrent SEO Title: '{seot}'", icon="🚨" )
                 elif lenseot > 65:
-                    st.error(f"SEO title is a bit too long. Please, shorten it.\n\nSEO Title: '{seot}'", icon="🚨")
+                    st.error(f"SEO title is a bit too long. Please shorten it.\n\nCurrent SEO Title: '{seot}'", icon="🚨")
                     st.warning(f"If this is a 'News' kind of article and not an Evergreen/Roundup, the SEO Title can be longer for editorial purposes", icon="⚠️")
                 else:
-                    st.success(f"SEO title is OPTIMIZED in length, well done!\n\nSEO Title: '{seot}'", icon="✅")
+                    st.success(f"SEO title is OPTIMIZED in terms of length. Well done!\n\nSEO Title: '{seot}'", icon="✅")
             except Exception as e:
-                st.error("Error: Unable to analyze the URL. Please, check if it's valid.")
+                st.error("Error: Unable to analyze the URL. Please check that it's valid.")
             
             st.subheader("Meta Description Length:")
             try:
@@ -237,9 +192,9 @@ def main():
                 elif len_metad > 150:
                     st.error(f"Meta Description is OVER 150 characters. It is {len_metad} characters long.\n\nMeta Description: '{metad}'", icon="🚨" )
                 else:
-                    st.success(f"Meta Description is OPTIMIZED in length. It is {len_metad} characters long. Well done!\n\n Meta Description: '{metad}'", icon="✅")
+                    st.success(f"Meta Description is OPTIMIZED in terms of length. It is {len_metad} characters long. Well done!\n\n Meta Description: '{metad}'", icon="✅")
             except Exception as e:
-                st.error("Error: Unable to analyze the URL. Please, check if it's valid.")
+                st.error("Error: Unable to analyze the URL. Please check that it's valid.")
 
             st.subheader("Secondary Title Length:")
             try:
@@ -248,14 +203,14 @@ def main():
     
                 secondary, len_secondary = get_secondary_title_length(soup)
                 if len_secondary < 120:
-                    st.warning(f"Secondary title seems to be too short. Please check if its length is between one line and a half and two lines.\n\nThis is the Secondary Title:'{secondary}'", icon="⚠️")
+                    st.warning(f"Secondary title seems to be too short. Please ensure its length is between one and a half lines to two lines.\n\nCurrent Secondary Title:'{secondary}'", icon="⚠️")
                 elif len_secondary > 210:
-                    st.warning(f"Secondary title seems to be too long. Please check if its length is between one line and a half and two lines.\n\nThis is the Secondary Title:'{secondary}'", icon="⚠️")
+                    st.warning(f"Secondary title seems to be too long. Please ensure its length is between one and a half lines to two lines.\n\Current Secondary Title:'{secondary}'", icon="⚠️")
                 else:
                     if len_secondary > 120 and len_secondary < 190:
-                        st.success(f"Looks like Secondary Title is OPTIMIZED in length. Well done!\n\nSecondary Title: '{secondary}'", icon="✅")
+                        st.success(f"Looks like Secondary Title is OPTIMIZED in terms of length. Well done!\n\nSecondary Title: '{secondary}'", icon="✅")
             except Exception as e:
-                st.error("Error: Unable to analyze the URL. Please, check if it's valid.")
+                st.error("Error: Unable to analyze the URL. Please, check that it's valid.")
             
             st.subheader("Internal Links:")
             try:
@@ -268,22 +223,22 @@ def main():
                 if cta_count is not None:
                     total = art_ucount - cta_count
                     if total <= 0:
-                        st.warning(f"If this is a Fever branded article, please do not mind this alert, as internal linking is not applied.", icon="⚠️")
+                        st.warning(f"If this is a Fever branded article, please disregard this alert, as internal linking is not applied.", icon="⚠️")
                         st.error(f"There's no internal linking in the article. Please, add relevant key content articles as internal links.", icon="🚨") 
                     elif total > 0 and total <= 3:
-                        st.warning(f"Please, consider adding more unique articles as internal links.\n\n There is a total of {total} unique articles and a total of {art_count} URLs (one being the CTA) linked into this article.\n\n Here are the links: {art_list}.", icon="⚠️")
+                        st.warning(f"Please consider adding more unique articles as internal links.\n\n There are a total of {total} unique articles and a total of {art_count} URLs (one being the CTA) linked within this article.\n\n Here are the links: {art_list}.", icon="⚠️")
                     else:
                         if total > 3:
-                            st.success(f"Internal linking nicely done!\nThere is a total of {total} no CTA unique articles in the content and a total of {art_count} URLs linked into this article.\n\nHere the links: {art_list}.", icon="✅")                
+                            st.success(f"Internal linking is nicely done!\nThere are a total of {total} no CTA unique articles in the content and a total of {art_count} URLs linked within this article.\n\nHere the links: {art_list}.", icon="✅")                
                 else:
                     if art_ucount < 1:
-                        st.error(f"There's no internal linking in the article. Please, add relevant key content articles as internal links.", icon="🚨")
+                        st.error(f"There is no internal linking in the article. Please add relevant key content articles as internal links.", icon="🚨")
                     elif art_ucount > 0 and art_ucount < 3:
-                        st.warning(f"Please, consider adding more unique articles as internal links.\n\n There is a total of {art_ucount} unique articles and a total of {art_count} URLs linked into this article.\n\n Here the links: {art_list}.", icon="⚠️")
+                        st.warning(f"Please consider adding more unique articles as internal links.\n\n There are a total of {art_ucount} unique articles and a total of {art_count} URLs linked within this article.\n\n Here are the links: {art_list}.", icon="⚠️")
                     else:
-                        st.success(f"Internal linking nicely done!.\nThere is a total of {total} unique articles and a total of {art_count} URLs linked into this article.\n Here the links: {art_list}.", icon="✅")
+                        st.success(f"Nicely done!.\nThere are a total of {total} unique articles and a total of {art_count} URLs linked within this article.\n Here are the links: {art_list}.", icon="✅")
             except Exception as e:
-                st.error("Error: Unable to analyze the URL. Please, check if it's valid.")
+                st.error("Error: Unable to analyze the URL. Please, check that it's valid.")
 
             st.subheader("CTA Checker:")
             try:
@@ -302,9 +257,9 @@ def main():
                 #     else:
                 #         st.warning(f"Total amount of unique articles is just {total}. Please, add more internal linking throughout the content", icon="⚠️")
                 else:
-                    st.error("There is no CTA. Please add one evergreen key organic content as CTA.", icon="🚨")
+                    st.error("There is no CTA. Please add one evergreen key organic content link as a CTA.", icon="🚨")
             except Exception as e:
-                st.error("Error: Unable to analyze the URL. Please, check if it's valid.")                
+                st.error("Error: Unable to analyze the URL. Please check that it's valid.")                
 
             st.subheader("Categories Count:")
             try:
@@ -319,7 +274,7 @@ def main():
                 else:
                     st.success(f"There is a total of {cat_ucount} categories in this article. Perfect!", icon="✅")
             except Exception as e:
-                st.error("Error: Unable to analyze the URL. Please, check if it's valid.") 
+                st.error("Error: Unable to analyze the URL. Please check that it's valid.") 
 
             st.subheader("Featured Image Size and Alt:") 
             try:
@@ -346,20 +301,20 @@ def main():
             img_count, alt_count, alt_list, ig_count, total = get_total_image_count(soup)
                 
             if img_count <=1 and ig_count is not 0:
-                st.error(f"All the images (except for the featured one) are Instagram embededs ({ig_count}). Please, add real images instead.", icon="🚨")
+                st.error(f"All images (except for the featured one) are Instagram embed ({ig_count}). Please add uploaded images instead, where possible.", icon="🚨")
             elif img_count > 1 and ig_count < 1:    
                 if alt_count == img_count:
-                    st.success(f"There is a total of {img_count} images, from which all of them have an alt.\n\nThis are the alts:{alt_list}", icon="✅")
+                    st.success(f"There are a total of {img_count} images, all with alt text.\n\nHere are the alt texts:{alt_list}", icon="✅")
                 else:
-                    st.warning(f"There is a total of {img_count} images, from which {img_count-alt_count} have no alt.\n\nPlease, add an Alt to the images.", icon="⚠️")
+                    st.warning(f"There are a total of {img_count} images, out of these, {img_count-alt_count} have no alt text.\n\nPlease a text to these images.", icon="⚠️")
             elif img_count > 1 and ig_count > 0:
                 if alt_count == img_count:
-                    st.success(f"There is a total of {total} images, from which {ig_count} are embeded from Instagram.  all of them have an alt.\n\nThis are the alts:{alt_list}", icon="✅")
+                    st.success(f"There are a total of {total} images, including {ig_count} embeds from Instagram. All of them have alt text.\n\nHere are the alt texts:{alt_list}", icon="✅")
                 else:
-                    st.warning(f"There is a total of {total} images, from which {ig_count} are embeded from Instagram.\n\nFrom those {img_count} real images, all of them have an alt.", icon="✅")
-                    st.success(f"From those {img_count} real images, {img_count-alt_count} have no alt. Please, add an alt to the images.", icon="⚠️")
+                    st.success(f"There are a total of {total} images, including {ig_count} are embeds from Instagram.\n\nFrom those {img_count} uploaded images, all of them have an alt text.", icon="✅")
+                    st.success(f"From those {img_count} uploaded images, {img_count-alt_count} have no alt. Please add alt text to the images.", icon="⚠️")
             else:
-                st.error(f"There is no images throughout the content. Please, add images.", icon="🚨")
+                st.error(f"There are no images included in the content. Please, add images.", icon="🚨")
         else:
             st.warning("Please enter a valid URL.")
 
