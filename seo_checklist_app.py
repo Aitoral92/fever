@@ -154,7 +154,8 @@ def main():
 
             st.subheader("URL friendliness")
             try:
-                hyphen_count, has_digit = count_hyphens_and_digits_in_url(url)
+                hyphen_count = url.count("-")
+                has_digit = any(char.isdigit() for char in url)
                 st.info(f"This is the URL:\n{url}", icon="👀")
                 if hyphen_count > 6:
                     st.warning(f"The URL seems to be too long. Consider shortening it.", icon="⚠️")
@@ -165,6 +166,18 @@ def main():
                     st.warning("The URL doesn't seem very SEO friendly. Consider removing any numbers if they are not necessary.", icon="⚠️")
                 else:
                     st.success(f"The URL is fine in terms of SEO friendliness.", icon="✅")
+
+                # hyphen_count, has_digit = count_hyphens_and_digits_in_url(url)
+                # st.info(f"This is the URL:\n{url}", icon="👀")
+                # if hyphen_count > 6:
+                #     st.warning(f"The URL seems to be too long. Consider shortening it.", icon="⚠️")
+                # else:
+                #     st.success(f"The URL looks fine in terms of length.", icon="✅")
+
+                # if has_digit:
+                #     st.warning("The URL doesn't seem very SEO friendly. Consider removing any numbers if they are not necessary.", icon="⚠️")
+                # else:
+                #     st.success(f"The URL is fine in terms of SEO friendliness.", icon="✅")
             except Exception as e:
                 st.error("Error: Unable to analyze the URL. Please check that it's valid.")
             
@@ -309,7 +322,7 @@ def main():
                 if alt_count == img_count:
                     st.success(f"There are a total of {img_count} images, all with alt text.\n\nHere are the alt texts:{alt_list}", icon="✅")
                 else:
-                    st.warning(f"There are a total of {img_count} images, out of these, {img_count-alt_count} have no alt text.\n\nPlease a text to these images.", icon="⚠️")
+                    st.warning(f"There are a total of {img_count} images, out of these, {img_count-alt_count} have no alt text.\n\nPlease add alt text to these images.", icon="⚠️")
             elif img_count > 1 and ig_count > 0:
                 if alt_count == img_count:
                     st.success(f"There are a total of {total} images, including {ig_count} embeds from Instagram. All of the uploaded images have alt text.\n\nHere are the alt texts:{alt_list}", icon="✅")
