@@ -150,9 +150,8 @@ def main():
             soup = BeautifulSoup(get_url.text, "html.parser")
 
             st.subheader("URL friendliness")
-            hyphen_count, has_digit = count_hyphens_and_digits_in_url(url)
             try:
-                # hyphen_count, has_digit = count_hyphens_and_digits_in_url(url)
+                hyphen_count, has_digit = count_hyphens_and_digits_in_url(url)
                 st.info(f"This is the URL:\n{url}", icon="👀")
                 if hyphen_count > 6:
                     st.warning(f"The URL seems to be too long. Consider shortening it.", icon="⚠️")
