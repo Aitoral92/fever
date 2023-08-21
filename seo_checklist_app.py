@@ -8,11 +8,11 @@ from urllib.request import urlopen as uReq
 import streamlit as st
 import json
 
-def count_hyphens_and_digits_in_url(url):
-    hyphen_count = url.count("-")
-    has_digit = any(char.isdigit() for char in url)
-    url_len = len(url)
-    return hyphen_count, has_digit, url_len
+# def count_hyphens_and_digits_in_url(url):
+#     hyphen_count = url.count("-")
+#     has_digit = any(char.isdigit() for char in url)
+#     url_len = len(url)
+#     return hyphen_count, has_digit, url_len
 
 def get_seo_title_length(soup):
     seot = soup.find('title')
@@ -239,18 +239,21 @@ def main():
                 if cta_count is not None:
                     total = art_ucount - cta_count
                     if total <= 0:
-                        st.warning(f"If this is a Fever branded article, please disregard this alert, as internal linking is not applied.", icon="⚠️")
-                        st.error(f"There's no internal linking in the article. Please, add relevant key content articles as internal links.", icon="🚨") 
+                        st.error(f"There's no internal linking in the article. Please, add relevant key content articles as internal links.", icon="🚨")
+                        st.warning(f"If this is a Fever branded article, please disregard this alert, as internal linking is not applied.", icon="⚠️") 
                     elif total > 0 and total <= 3:
                         st.warning(f"Please consider adding more unique articles as internal links.\n\n There are a total of {total} unique articles and a total of {art_count} URLs (one being the CTA) linked within this article.\n\n Here are the links: {art_list}.", icon="⚠️")
+                        st.warning(f"If this is a Fever branded article, please disregard this alert, as internal linking is not applied.", icon="⚠️")
                     else:
                         if total > 3:
-                            st.success(f"Internal linking is nicely done!\nThere are a total of {total} no CTA unique articles in the content and a total of {art_count} URLs linked within this article.\n\nHere the links: {art_list}.", icon="✅")                
+                            st.success(f"Nicely done!\nThere are a total of {total} no CTA unique articles in the content and a total of {art_count} URLs linked within this article.\n\nHere the links: {art_list}.", icon="✅")                
                 else:
                     if art_ucount < 1:
                         st.error(f"There is no internal linking in the article. Please add relevant key content articles as internal links.", icon="🚨")
+                        st.warning(f"If this is a Fever branded article, please disregard this alert, as internal linking is not applied.", icon="⚠️")
                     elif art_ucount > 0 and art_ucount < 3:
                         st.warning(f"Please consider adding more unique articles as internal links.\n\n There are a total of {art_ucount} unique articles and a total of {art_count} URLs linked within this article.\n\n Here are the links: {art_list}.", icon="⚠️")
+                        st.warning(f"If this is a Fever branded article, please disregard this alert, as internal linking is not applied.", icon="⚠️")
                     else:
                         st.success(f"Nicely done!.\nThere are a total of {total} unique articles and a total of {art_count} URLs linked within this article.\n Here are the links: {art_list}.", icon="✅")
             except Exception as e:
