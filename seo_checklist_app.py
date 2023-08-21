@@ -150,20 +150,20 @@ def main():
             soup = BeautifulSoup(get_url.text, "html.parser")
 
             st.subheader("URL friendliness")
-            try:
-                hyphen_count, has_digit = count_hyphens_and_digits_in_url(url)
-                st.info(f"This is the URL:\n{url}", icon="👀")
-                if hyphen_count > 6:
-                    st.warning(f"The URL seems to be too long. Consider shortening it.", icon="⚠️")
-                else:
-                    st.success(f"The URL looks fine in terms of length.", icon="✅")
+            # try:
+            hyphen_count, has_digit = count_hyphens_and_digits_in_url(url)
+            st.info(f"This is the URL:\n{url}", icon="👀")
+            if hyphen_count > 6:
+                st.warning(f"The URL seems to be too long. Consider shortening it.", icon="⚠️")
+            else:
+                st.success(f"The URL looks fine in terms of length.", icon="✅")
 
-                if has_digit:
-                    st.warning("The URL doesn't seem very SEO friendly. Consider removing any numbers if they are not necessary.", icon="⚠️")
-                else:
-                    st.success(f"The URL is fine in terms of SEO friendliness.", icon="✅")
-            except Exception as e:
-                st.error("Error: Unable to analyze the URL. Please check that it's valid.")
+            if has_digit:
+                st.warning("The URL doesn't seem very SEO friendly. Consider removing any numbers if they are not necessary.", icon="⚠️")
+            else:
+                st.success(f"The URL is fine in terms of SEO friendliness.", icon="✅")
+            # except Exception as e:
+                # st.error("Error: Unable to analyze the URL. Please check that it's valid.")
             
             st.subheader("SEO Title Length:")
             try:
