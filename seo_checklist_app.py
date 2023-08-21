@@ -1,8 +1,11 @@
-import streamlit as st
+import pandas as pd
 import requests
+import re
 from bs4 import BeautifulSoup
 from collections import Counter
 from urllib.parse import urlparse
+from urllib.request import urlopen as uReq
+import streamlit as st
 import json
 
 def count_hyphens_and_digits_in_url(url):
@@ -311,7 +314,7 @@ def main():
                 if alt_count == img_count:
                     st.success(f"There are a total of {total} images, including {ig_count} embeds from Instagram. All of the uploaded images have alt text.\n\nHere are the alt texts:{alt_list}", icon="✅")
                 else:
-                    st.success(f"There are a total of {total} images, including {ig_count} embeds from Instagram.\n\nFrom those {img_count} uploaded images, {img_count-alt_count} have no alt. Please add alt text to the images.", icon="⚠️")
+                    st.warning(f"There are a total of {total} images, including {ig_count} embeds from Instagram.\n\nFrom those {img_count} uploaded images, {img_count-alt_count} have no alt. Please add alt text to the images.", icon="⚠️")
             else:
                 st.error(f"There are no images included in the content. Please, add images.", icon="🚨")
         else:
