@@ -223,7 +223,7 @@ def main():
                 elif len_secondary > 210:
                     st.warning(f"Secondary title seems to be too long. Please ensure its length is between one and a half lines to two lines.\n\Current Secondary Title:'{secondary}'", icon="⚠️")
                 else:
-                    if len_secondary > 120 and len_secondary < 190:
+                    if len_secondary > 120 and len_secondary < 210:
                         st.success(f"Looks like Secondary Title is OPTIMIZED in terms of length. Well done!\n\nSecondary Title: '{secondary}'", icon="✅")
             except Exception as e:
                 st.error("Error: Unable to analyze the URL. Please, check that it's valid.")
