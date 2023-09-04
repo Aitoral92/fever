@@ -328,7 +328,8 @@ def main():
                     st.warning(f"There are a total of {img_count} images, out of these, {img_count-alt_count} have no alt text.\n\nPlease add alt text to these images.", icon="⚠️")
             elif img_count > 1 and ig_count > 0:
                 if alt_count == img_count:
-                    st.warning(f"There are a total of {total} images, including {ig_count} embeds from Instagram.\n\nPlease try to limit the use of Instagram embeds as much as possible.\n\nAll of the uploaded images have alt text.\n\nHere are the alt texts:{alt_list}", icon="⚠️")
+                    st.success(f"There are a total of {total} images, including {ig_count} embeds from Instagram.\n\nAll of the uploaded images have alt text.\n\nHere are the alt texts:{alt_list}", icon="✅")
+                    st.warning(f"Please try to limit the use of Instagram embeds as much as possible.", icon="⚠️")
                 else:
                     st.warning(f"There are a total of {total} images, including {ig_count} embeds from Instagram.\n\nFrom those {img_count} uploaded images, {img_count-alt_count} have no alt. Please add alt text to the images.", icon="⚠️")
             else:
