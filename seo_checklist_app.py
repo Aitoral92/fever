@@ -304,7 +304,7 @@ def main():
                 alt = get_featured_image_alt(soup)
                 if width is not None:
                     if width >= 1200:
-                        st.success(f"The featured image meets width requirements: {width}px.\n\nThe Alt is: '{alt}'", icon="✅")
+                        st.success(f"The featured image meets width requirements of at least 1200px wide: it is {width}px.\n\nThe Alt is: '{alt}'", icon="✅")
                     else:
                         st.warning(f"Remember: feature image must be at least 1200px wide.\n\nThe current featured image is {width}px wide.\n\nThe Alt is: '{alt}'", icon="⚠️")            
                 else:
@@ -323,12 +323,12 @@ def main():
                 st.error(f"All images (except for the featured one) are Instagram embed ({ig_count}). Please add uploaded images instead, where possible.", icon="🚨")
             elif img_count > 1 and ig_count < 1:    
                 if alt_count == img_count:
-                    st.success(f"There are a total of {img_count} images, all with alt text.\n\nHere are the alt texts:{alt_list}", icon="✅")
+                    st.success(f"There are a total of {img_count} uploaded images, all with alt text.\n\nHere are the alt texts:{alt_list}", icon="✅")
                 else:
                     st.warning(f"There are a total of {img_count} images, out of these, {img_count-alt_count} have no alt text.\n\nPlease add alt text to these images.", icon="⚠️")
             elif img_count > 1 and ig_count > 0:
                 if alt_count == img_count:
-                    st.success(f"There are a total of {total} images, including {ig_count} embeds from Instagram. All of the uploaded images have alt text.\n\nHere are the alt texts:{alt_list}", icon="✅")
+                    st.warning(f"There are a total of {total} images, including {ig_count} embeds from Instagram.\n\nPlease try to limit the use of Instagram embeds as much as possible.\n\nAll of the uploaded images have alt text.\n\nHere are the alt texts:{alt_list}", icon="⚠️")
                 else:
                     st.warning(f"There are a total of {total} images, including {ig_count} embeds from Instagram.\n\nFrom those {img_count} uploaded images, {img_count-alt_count} have no alt. Please add alt text to the images.", icon="⚠️")
             else:
