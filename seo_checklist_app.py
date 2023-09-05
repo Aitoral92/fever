@@ -343,6 +343,6 @@ def main():
                 st.error(f"There are no images included in the content. Please, add images.", icon="🚨")
         else:
             st.warning("Please enter a valid URL.")
-    st.text("If you happen to find any bug or something to be fixed, please contact Aitor Alonso from the SEO team in Slack")
+    st.text("If you happen to find any bug or something to be fixed, please contact Aitor Alonso\n\nfrom the SEO team in Slack")
 if __name__ == "__main__":
     main()
