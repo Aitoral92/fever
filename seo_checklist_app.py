@@ -144,7 +144,7 @@ def get_total_image_count(soup):
     return img_count, alt_count, alt_list, ig_count, total
 
 def main():
-    st.title("SEO Checklist Analyzer")
+    st.title("SEO Checker")
     url = st.text_input("Paste the URL and press 'Analyze' button:")
 
     if st.button("Analyze"):
@@ -238,7 +238,10 @@ def main():
                 
                 if cta_count > 0:
                     total = art_ucount - cta_count
-                    if total <= 0:
+                    if total == 0:
+                        st.error(f"There is only one internal link in the article.\n\nPlease make sure that it is different to the CTA and add more relevant key content articles as internal links.", icon="🚨")
+                        st.warning(f"If this is a Fever branded article, please disregard this alert, as internal linking is not applied.", icon="⚠️") 
+                    elif total < 0:
                         st.error(f"There's no internal linking in the article. Please, add relevant key content articles as internal links.", icon="🚨")
                         st.warning(f"If this is a Fever branded article, please disregard this alert, as internal linking is not applied.", icon="⚠️") 
                     elif total > 0 and total <= 3:
