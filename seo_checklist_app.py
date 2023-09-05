@@ -239,8 +239,12 @@ def main():
                 if cta_count > 0:
                     total = art_ucount - cta_count
                     if total == 0:
-                        st.error(f"There is only one internal link in the article.\n\nPlease make sure that it is different to the CTA and add more relevant key content articles as internal links.", icon="🚨")
-                        st.warning(f"If this is a Fever branded article, please disregard this alert, as internal linking is not applied.", icon="⚠️") 
+                        if art_list[0]==cta_list[0]:
+                            st.error(f"There is only one internal link in the article and is the same as the CTA.\n\nPlease make sure that it is different to the CTA and add more relevant key content articles as internal links.", icon="🚨")
+                            st.warning(f"If this is a Fever branded article, please disregard this alert, as internal linking is not applied.", icon="⚠️") 
+                        else:
+                            st.error(f"There is only one internal link in the article.\n\nPlease add more relevant key content articles as internal links.", icon="🚨")
+                            st.warning(f"If this is a Fever branded article, please disregard this alert, as internal linking is not applied.", icon="⚠️") 
                     elif total < 0:
                         st.error(f"There's no internal linking in the article. Please, add relevant key content articles as internal links.", icon="🚨")
                         st.warning(f"If this is a Fever branded article, please disregard this alert, as internal linking is not applied.", icon="⚠️") 
