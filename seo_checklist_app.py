@@ -107,7 +107,7 @@ def get_featured_image_width(soup):
             if width_value is not None:
                 return width_value
             else:
-                width_value = json_data['@graph'][0]['contentUrl']['width']
+                width_value = json_data['@graph'][0]['width']
 
 def get_featured_image_alt(soup):
     all_content = soup.find("section", class_="article__body col-md-8")
