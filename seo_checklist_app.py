@@ -104,7 +104,7 @@ def get_featured_image_width(soup):
 
             # Extraer el valor del "width"
             width_value = json_data['@graph'][0]['thumbnail']['width']
-            if width_value:
+            if width_value is not None:
                 return width_value
             else:
                 width_value = json_data['@graph'][0]['contentUrl']['width']
