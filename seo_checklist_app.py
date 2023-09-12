@@ -262,7 +262,7 @@ def main():
                     if art_ucount < 1:
                         st.error(f"There is no internal linking in the article. Please add relevant key content articles as internal links.", icon="🚨")
                         st.warning(f"If this is a Fever branded article, please disregard this alert, as internal linking is not applied.", icon="⚠️")
-                    elif art_ucount > 0 and art_ucount < 3:
+                    elif art_ucount > 0 and art_ucount <= 3:
                         st.warning(f"Please consider adding more unique articles as internal links.\n\n There are a total of {art_ucount} unique articles and a total of {art_count} URLs linked within this article.\n\n Here are the links: {art_list}.", icon="⚠️")
                         st.warning(f"If this is a Fever branded article, please disregard this alert, as internal linking is not applied.", icon="⚠️")
                     else:
