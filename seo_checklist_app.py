@@ -240,7 +240,7 @@ def main():
                 art_ucount, art_count, art_list = get_internal_links_count(soup, url)
                 cta_count,cta_list = check_cta(soup)
                 
-                if cta_count > 0:
+                if cta_count >= 1:
                     total = art_ucount - cta_count
                     if total == 0:
                         if art_list[0]==cta_list[0]:
