@@ -10,7 +10,7 @@ import requests
 def get_content(url_argument):
     page_source = requests.get(url_argument, timeout=5).text
     strainer = SoupStrainer('p')
-    soup = BeautifulSoup(page_source, 'lxml', parse_only=strainer)
+    soup = BeautifulSoup(page_source, 'html.parser', parse_only=strainer)
     paragraph_list = [element.text for element in soup.find_all(strainer)]
     content = " ".join(paragraph_list)
     return content
