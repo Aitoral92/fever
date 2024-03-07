@@ -15,17 +15,17 @@ def get_content(url_argument):
     content = " ".join(paragraph_list)
     return content
 
-def get_input_urls_and_save(filename):
-    st.write(f"Ingrese las URLs para {filename}:")
-    clipboard_content = st.text_area(f"Pegue el contenido aquí para {filename}:")
+def get_input_urls_and_save():
+    st.write(f"Ingrese las URLs para redirigir:")
+    clipboard_content = st.text_area(f"Pegue el contenido aquí para:")
     elements = clipboard_content.split()
     return elements
 
 def main():
     st.title("Análisis de Contenido Web")
 
-    url_list_a = get_input_urls_and_save("url_list_a")
-    url_list_b = get_input_urls_and_save("url_list_b")
+    url_list_a = get_input_urls_and_save()
+    url_list_b = get_input_urls_and_save()
 
     with st.spinner('Obteniendo contenido de las URLs...'):
         with concurrent.futures.ThreadPoolExecutor() as executor:
