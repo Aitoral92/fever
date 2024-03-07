@@ -32,13 +32,15 @@ def main():
 
     url_list_a = get_input_urls_from()
     url_list_b = get_input_urls_to()
+    try:
+        with st.spinner('Obteniendo contenido de las URLs...'):
+            with concurrent.futures.ThreadPoolExecutor() as executor:
+                content_list_a = list(executor.map(get_content, url_list_a))
+                content_list_b = list(executor.map(get_content, url_list_b))
 
-    with st.spinner('Obteniendo contenido de las URLs...'):
-        with concurrent.futures.ThreadPoolExecutor() as executor:
-            content_list_a = list(executor.map(get_content, url_list_a))
-            content_list_b = list(executor.map(get_content, url_list_b))
-
-    content_dictionary = dict(zip(url_list_b, content_list_b))
+        content_dictionary = dict(zip(url_list_b, content_list_b))
+    except:
+        print("Waiting for URLs to check")
 
     model = PolyFuzz("TF-IDF")
     model.match(content_list_a, content_list_b)
