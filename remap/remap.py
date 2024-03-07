@@ -1,4 +1,4 @@
-import os
+from io import StringIO
 import streamlit as st
 from bs4 import BeautifulSoup, SoupStrainer
 from polyfuzz import PolyFuzz
@@ -34,7 +34,7 @@ def main():
     url_list_b = get_input_urls_to()
 
     if (not url_list_a) or (not url_list_b):
-        st.info('The calculations will run, once you entered two sentences.')
+        st.info('The calculations will run, once you entered two inputs.')
         st.stop()
 
     with st.spinner('Obteniendo contenido de las URLs...'):
@@ -67,14 +67,23 @@ def main():
 
     # Guardar los resultados en un archivo CSV
     output_filename = st.text_input("Ingrese el nombre del archivo CSV para guardar los resultados:", "resultados")
-    if st.button("Guardar CSV"):
-        with open(output_filename + ".csv", "w", newline="") as file:
-            columns = ["From URL", "To URL", "% Identical"]
-            writer = csv.writer(file)
-            writer.writerow(columns)
-            for row in to_zip:
-                writer.writerow(row)
-        st.success(f"Los resultados se han guardado en '{output_filename}.csv' satisfactoriamente.")    
+    if st.button("Descargar CSV"):
+        # Crear un archivo CSV en memoria utilizando StringIO
+        output_csv = StringIO()
+        writer = csv.writer(output_csv)
+        columns = ["From URL", "To URL", "% Identical"]
+        writer.writerow(columns)
+        for row in to_zip:
+            writer.writerow(row)
+        
+        # Descargar el archivo CSV como un archivo descargable en el navegador del usuario
+        st.download_button(
+            label="Haga clic aquí para descargar",
+            data=output_csv.getvalue(),
+            file_name=output_filename + ".csv",
+            mime="text/csv"
+        )
+        st.success(f"Los resultados se han descargado como '{output_filename}.csv' satisfactoriamente.")
 
 if __name__ == "__main__":
     main()
