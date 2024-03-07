@@ -39,8 +39,8 @@ def main():
                 content_list_b = list(executor.map(get_content, url_list_b))
 
         content_dictionary = dict(zip(url_list_b, content_list_b))
-    except:
-        print("Waiting for URLs to check")
+    except ValueError:
+        st.error("Please enter a valid input")
 
     model = PolyFuzz("TF-IDF")
     model.match(content_list_a, content_list_b)
