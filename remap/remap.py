@@ -17,13 +17,13 @@ def get_content(url_argument):
 
 def get_input_urls_from():
     st.write(f"Ingrese las URLs para redirigir:")
-    clipboard_content_from = st.text_area(f"Pegue el contenido aquí:")
+    clipboard_content_from = st.text_area(f"Pegue el contenido aquí (from):")
     elements_from = clipboard_content_from.split()
     return elements_from
 
 def get_input_urls_to():
     st.write(f"Ingrese las URLs para redirigir:")
-    clipboard_content_to = st.text_area(f"Pegue el contenido aquí:")
+    clipboard_content_to = st.text_area(f"Pegue el contenido aquí (to):")
     elements_to = clipboard_content_to.split()
     return elements_to 
 
