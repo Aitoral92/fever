@@ -153,7 +153,7 @@ def main():
 
     if st.button("Analyze"):
         if url:
-            get_url = requests.get(url)
+            get_url = requests.get(url).request.headers
             soup = BeautifulSoup(get_url.text, "html.parser")
 
             st.subheader("URL friendliness")
