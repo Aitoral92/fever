@@ -154,6 +154,7 @@ def main():
     if st.button("Analyze"):
         if url:
             get_url = requests.get(url)
+            st.info(f"prueba{get_url}")
             soup = BeautifulSoup(get_url.content, "html.parser")
             st.info(f"prueba{soup}")
 
