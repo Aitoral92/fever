@@ -154,7 +154,8 @@ def main():
     if st.button("Analyze"):
         if url:
             get_url = requests.get(url)
-            soup = BeautifulSoup(get_url.content, "html.parser")
+            soup = BeautifulSoup(get_url.text, "html.parser")
+            st.info(f"prueba{soup} links, one is the CTA.")
 
             st.subheader("URL friendliness")
             # try:
