@@ -155,6 +155,7 @@ def main():
     if st.button("Analyze"):
         if url:
             get_url = requests.get(url)
+            time.sleep(5)
             st.info(f"prueba{get_url}")
             soup = BeautifulSoup(get_url.content, "html.parser")
             st.info(f"prueba{soup}")
@@ -192,7 +193,6 @@ def main():
             # try:
                 # get_url = requests.get(url)
                 # soup = BeautifulSoup(get_url.text, "html.parser")                                
-            time.sleep(5)    
             seot, lenseot = get_seo_title_length(soup)
             if lenseot < 50:
                 st.error(f"SEO title is BELOW 50 characters. It is {lenseot} characters long.\n\nCurrent SEO Title: '{seot}'", icon="🚨" )
