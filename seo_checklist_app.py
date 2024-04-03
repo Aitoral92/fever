@@ -153,9 +153,8 @@ def main():
 
     if st.button("Analyze"):
         if url:
-            headers={'User-Agent': 'Chrome'}
-            get_url = requests.get(url, headers=headers)
-            soup = BeautifulSoup(get_url.text, "html.parser")
+            get_url = requests.get(url)
+            soup = BeautifulSoup(get_url.content, "html.parser")
 
             st.subheader("URL friendliness")
             # try:
