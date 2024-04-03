@@ -7,6 +7,7 @@ from urllib.parse import urlparse
 from urllib.request import urlopen as uReq
 import streamlit as st
 import json
+import time
 
 # def count_hyphens_and_digits_in_url(url):
 #     hyphen_count = url.count("-")
