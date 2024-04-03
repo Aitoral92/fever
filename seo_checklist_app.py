@@ -118,34 +118,34 @@ def get_featured_image_alt(soup):
     else:
         return None
 
-# def get_total_image_count(soup):
-#     all_content = soup.find("section", class_="article__body col-md-8")
+def get_total_image_count(soup):
+    all_content = soup.find("section", class_="article__body col-md-8")
 
-#     img_count = 0
-#     alt_count = 0
-#     alt_list = []
-#     ig_count = 0
+    img_count = 0
+    alt_count = 0
+    alt_list = []
+    ig_count = 0
 
-#     # Contar imagenes normales
+    # Contar imagenes normales
 
-#     for img in all_content.find_all('img', alt=True):
-#         # Verificar si la etiqueta 'img' tiene la clase "emoji" o está dentro de <noscript></noscript>
-#         if "emoji" in img.get("class", []) or img.find_parent("noscript"):
-#             continue  # Ignorar esta etiqueta 'img' y pasar a la siguiente
-#         img_count += 1
-#         if len(img["alt"]) > 0:
-#             alt_count += 1
-#             alt_list.append(img["alt"])
+    for img in all_content.find_all('img', alt=True):
+        # Verificar si la etiqueta 'img' tiene la clase "emoji" o está dentro de <noscript></noscript>
+        if "emoji" in img.get("class", []) or img.find_parent("noscript"):
+            continue  # Ignorar esta etiqueta 'img' y pasar a la siguiente
+        img_count += 1
+        if len(img["alt"]) > 0:
+            alt_count += 1
+            alt_list.append(img["alt"])
        
     
-#     # Contar imagenes embedadas
+    # Contar imagenes embedadas
   
-#     for img in all_content.find_all('blockquote', class_=True):
-#         ig_count += 1
+    for img in all_content.find_all('blockquote', class_=True):
+        ig_count += 1
     
-#     total=img_count+ig_count
+    total=img_count+ig_count
     
-#     return img_count, alt_count, alt_list, ig_count, total
+    return img_count, alt_count, alt_list, ig_count, total
 
 def main():
     st.title("SEO Checker")
@@ -323,28 +323,28 @@ def main():
             except Exception as e:
                 st.error("Error: Unable to analyze the URL. Please, check if it's valid.")   
             
-            # st.subheader("Images in content:")
+            st.subheader("Images in content:")
             
-            # get_url = requests.get(url)
-            # soup = BeautifulSoup(get_url.text, "html.parser") 
+            get_url = requests.get(url)
+            soup = BeautifulSoup(get_url.text, "html.parser") 
 
-            # img_count, alt_count, alt_list, ig_count, total = get_total_image_count(soup)
+            img_count, alt_count, alt_list, ig_count, total = get_total_image_count(soup)
                 
-            # if img_count <=1 and ig_count is not 0:
-            #     st.error(f"All images (except for the featured one) are Instagram embed ({ig_count}). Please add uploaded images instead, where possible.", icon="🚨")
-            # elif img_count > 1 and ig_count < 1:    
-            #     if alt_count == img_count:
-            #         st.success(f"There are a total of {img_count} uploaded images, all with alt text.\n\nHere are the alt texts:{alt_list}", icon="✅")
-            #     else:
-            #         st.warning(f"There are a total of {img_count} images, out of these, {img_count-alt_count} have no alt text.\n\nPlease add alt text to these images.", icon="⚠️")
-            # elif img_count > 1 and ig_count > 0:
-            #     if alt_count == img_count:
-            #         st.success(f"There are a total of {total} images, including {ig_count} embeds from Instagram.\n\nAll of the uploaded images have alt text.\n\nHere are the alt texts:{alt_list}", icon="✅")
-            #         st.warning(f"Please try to limit the use of Instagram embeds as much as possible.", icon="⚠️")
-            #     else:
-            #         st.warning(f"There are a total of {total} images, including {ig_count} embeds from Instagram.\n\nFrom those {img_count} uploaded images, {img_count-alt_count} have no alt. Please add alt text to the images.", icon="⚠️")
-            # else:
-            #     st.error(f"There are no images included in the content. Please, add images.", icon="🚨")
+            if img_count <=1 and ig_count is not 0:
+                st.error(f"All images (except for the featured one) are Instagram embed ({ig_count}). Please add uploaded images instead, where possible.", icon="🚨")
+            elif img_count > 1 and ig_count < 1:    
+                if alt_count == img_count:
+                    st.success(f"There are a total of {img_count} uploaded images, all with alt text.\n\nHere are the alt texts:{alt_list}", icon="✅")
+                else:
+                    st.warning(f"There are a total of {img_count} images, out of these, {img_count-alt_count} have no alt text.\n\nPlease add alt text to these images.", icon="⚠️")
+            elif img_count > 1 and ig_count > 0:
+                if alt_count == img_count:
+                    st.success(f"There are a total of {total} images, including {ig_count} embeds from Instagram.\n\nAll of the uploaded images have alt text.\n\nHere are the alt texts:{alt_list}", icon="✅")
+                    st.warning(f"Please try to limit the use of Instagram embeds as much as possible.", icon="⚠️")
+                else:
+                    st.warning(f"There are a total of {total} images, including {ig_count} embeds from Instagram.\n\nFrom those {img_count} uploaded images, {img_count-alt_count} have no alt. Please add alt text to the images.", icon="⚠️")
+            else:
+                st.error(f"There are no images included in the content. Please, add images.", icon="🚨")
         else:
             st.warning("Please enter a valid URL.")
     st.divider()
