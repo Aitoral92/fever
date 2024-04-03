@@ -157,19 +157,19 @@ def main():
             soup = BeautifulSoup(get_url.text, "html.parser")
 
             st.subheader("URL friendliness")
-            try:
-                hyphen_count = url.count("-")
-                has_digit = any(char.isdigit() for char in url)
-                st.info(f"This is the URL:\n{url}", icon="👀")
-                if hyphen_count > 6:
-                    st.warning(f"The URL seems to be too long. Consider shortening it.", icon="⚠️")
-                else:
-                    st.success(f"The URL looks fine in terms of length.", icon="✅")
+            # try:
+            hyphen_count = url.count("-")
+            has_digit = any(char.isdigit() for char in url)
+            st.info(f"This is the URL:\n{url}", icon="👀")
+            if hyphen_count > 6:
+                st.warning(f"The URL seems to be too long. Consider shortening it.", icon="⚠️")
+            else:
+                st.success(f"The URL looks fine in terms of length.", icon="✅")
 
-                if has_digit:
-                    st.warning("The URL doesn't seem very SEO friendly. Consider removing any numbers if they are not necessary.", icon="⚠️")
-                else:
-                    st.success(f"The URL is fine in terms of SEO friendliness.", icon="✅")
+            if has_digit:
+                st.warning("The URL doesn't seem very SEO friendly. Consider removing any numbers if they are not necessary.", icon="⚠️")
+            else:
+                st.success(f"The URL is fine in terms of SEO friendliness.", icon="✅")
 
                 # hyphen_count, has_digit = count_hyphens_and_digits_in_url(url)
                 # st.info(f"This is the URL:\n{url}", icon="👀")
@@ -182,146 +182,146 @@ def main():
                 #     st.warning("The URL doesn't seem very SEO friendly. Consider removing any numbers if they are not necessary.", icon="⚠️")
                 # else:
                 #     st.success(f"The URL is fine in terms of SEO friendliness.", icon="✅")
-            except Exception as e:
-                st.error("Error: Unable to analyze the URL. Please check that it's valid.")
+            # except Exception as e:
+            #     st.error("Error: Unable to analyze the URL. Please check that it's valid.")
             
             st.subheader("SEO Title Length:")
-            try:
+            # try:
                 # get_url = requests.get(url)
                 # soup = BeautifulSoup(get_url.text, "html.parser")                                
                 
-                seot, lenseot = get_seo_title_length(soup)
-                if lenseot < 50:
-                    st.error(f"SEO title is BELOW 50 characters. It is {lenseot} characters long.\n\nCurrent SEO Title: '{seot}'", icon="🚨" )
-                elif lenseot > 65:
-                    st.error(f"SEO title is a bit too long. Please shorten it.\n\nCurrent SEO Title: '{seot}'", icon="🚨")
-                    st.warning(f"If this is a 'News' kind of article and not an Evergreen/Roundup, the SEO Title can be longer for editorial purposes", icon="⚠️")
-                else:
-                    st.success(f"SEO title is OPTIMIZED in terms of length. Well done!\n\nSEO Title: '{seot}'", icon="✅")
-            except Exception as e:
-                st.error("Error: Unable to analyze the URL. Please check that it's valid.")
+            seot, lenseot = get_seo_title_length(soup)
+            if lenseot < 50:
+                st.error(f"SEO title is BELOW 50 characters. It is {lenseot} characters long.\n\nCurrent SEO Title: '{seot}'", icon="🚨" )
+            elif lenseot > 65:
+                st.error(f"SEO title is a bit too long. Please shorten it.\n\nCurrent SEO Title: '{seot}'", icon="🚨")
+                st.warning(f"If this is a 'News' kind of article and not an Evergreen/Roundup, the SEO Title can be longer for editorial purposes", icon="⚠️")
+            else:
+                st.success(f"SEO title is OPTIMIZED in terms of length. Well done!\n\nSEO Title: '{seot}'", icon="✅")
+            # except Exception as e:
+            #     st.error("Error: Unable to analyze the URL. Please check that it's valid.")
             
             st.subheader("Meta Description Length:")
-            try:
+            # try:
                 # get_url = requests.get(url)
                 # soup = BeautifulSoup(get_url.text, "html.parser")                   
     
-                metad, len_metad = get_meta_description_length(soup)
-                if len_metad < 120:
-                    st.error(f"Meta Description is BELOW 120 characters. It is {len_metad} characters long.\n\nMeta Description: '{metad}'", icon="🚨" )
-                elif len_metad > 150:
-                    st.error(f"Meta Description is OVER 150 characters. It is {len_metad} characters long.\n\nMeta Description: '{metad}'", icon="🚨" )
-                else:
-                    st.success(f"Meta Description is OPTIMIZED in terms of length. It is {len_metad} characters long. Well done!\n\n Meta Description: '{metad}'", icon="✅")
-            except Exception as e:
-                st.error("Error: Unable to analyze the URL. Please check that it's valid.")
+            metad, len_metad = get_meta_description_length(soup)
+            if len_metad < 120:
+                st.error(f"Meta Description is BELOW 120 characters. It is {len_metad} characters long.\n\nMeta Description: '{metad}'", icon="🚨" )
+            elif len_metad > 150:
+                st.error(f"Meta Description is OVER 150 characters. It is {len_metad} characters long.\n\nMeta Description: '{metad}'", icon="🚨" )
+            else:
+                st.success(f"Meta Description is OPTIMIZED in terms of length. It is {len_metad} characters long. Well done!\n\n Meta Description: '{metad}'", icon="✅")
+            # except Exception as e:
+            #     st.error("Error: Unable to analyze the URL. Please check that it's valid.")
 
             st.subheader("Secondary Title Length:")
-            try:
+            # try:
                 # get_url = requests.get(url)
                 # soup = BeautifulSoup(get_url.text, "html.parser")                    
     
-                secondary, len_secondary = get_secondary_title_length(soup)
-                if len_secondary < 120:
-                    st.warning(f"Secondary title seems to be too short. Please ensure its length is between one and a half lines to two lines.\n\nCurrent Secondary Title:'{secondary}'", icon="⚠️")
-                elif len_secondary > 210:
-                    st.warning(f"Secondary title seems to be too long. Please ensure its length is between one and a half lines to two lines.\n\Current Secondary Title:'{secondary}'", icon="⚠️")
-                else:
-                    if len_secondary > 120 and len_secondary < 210:
-                        st.success(f"Looks like Secondary Title is OPTIMIZED in terms of length. Well done!\n\nSecondary Title: '{secondary}'", icon="✅")
-            except Exception as e:
-                st.error("Error: Unable to analyze the URL. Please, check that it's valid.")
+            secondary, len_secondary = get_secondary_title_length(soup)
+            if len_secondary < 120:
+                st.warning(f"Secondary title seems to be too short. Please ensure its length is between one and a half lines to two lines.\n\nCurrent Secondary Title:'{secondary}'", icon="⚠️")
+            elif len_secondary > 210:
+                st.warning(f"Secondary title seems to be too long. Please ensure its length is between one and a half lines to two lines.\n\Current Secondary Title:'{secondary}'", icon="⚠️")
+            else:
+                if len_secondary > 120 and len_secondary < 210:
+                    st.success(f"Looks like Secondary Title is OPTIMIZED in terms of length. Well done!\n\nSecondary Title: '{secondary}'", icon="✅")
+            # except Exception as e:
+            #     st.error("Error: Unable to analyze the URL. Please, check that it's valid.")
             
             st.subheader("Internal Links:")
-            try:
+            # try:
                 # get_url = requests.get(url)
                 # soup = BeautifulSoup(get_url.text, "html.parser")                       
     
-                art_ucount, art_count, art_list = get_internal_links_count(soup, url)
-                cta_count,cta_list = check_cta(soup)
-                
-                if cta_count > 0:
-                    total = art_ucount - cta_count
-                    if total == 0:
-                        if art_list[0]==cta_list[0]:
-                            st.error(f"There is only one internal link in the article and it is the same as the CTA.\n\nPlease make sure that it is different to the CTA and add more relevant key content articles as internal links.", icon="🚨")
-                            st.warning(f"If this is a Fever branded article, please disregard this alert, as internal linking is not applied.", icon="⚠️") 
-                        else:
-                            st.error(f"There is only one internal link in the article.\n\nPlease add more relevant key content articles as internal links.", icon="🚨")
-                            st.warning(f"If this is a Fever branded article, please disregard this alert, as internal linking is not applied.", icon="⚠️") 
-                    elif total < 0:
-                        st.error(f"There's no internal linking in the article. Please, add relevant key content articles as internal links.", icon="🚨")
+            art_ucount, art_count, art_list = get_internal_links_count(soup, url)
+            cta_count,cta_list = check_cta(soup)
+            
+            if cta_count > 0:
+                total = art_ucount - cta_count
+                if total == 0:
+                    if art_list[0]==cta_list[0]:
+                        st.error(f"There is only one internal link in the article and it is the same as the CTA.\n\nPlease make sure that it is different to the CTA and add more relevant key content articles as internal links.", icon="🚨")
                         st.warning(f"If this is a Fever branded article, please disregard this alert, as internal linking is not applied.", icon="⚠️") 
-                    elif total > 0 and total <= 3:
-                        st.warning(f"Please consider adding more unique articles as internal links.\n\n There are a total of {total} unique articles and a total of {art_count} URLs (one being the CTA) linked within this article.\n\n Here are the links: {art_list}.", icon="⚠️")
-                        st.warning(f"If this is a Fever branded article, please disregard this alert, as internal linking is not applied.", icon="⚠️")
                     else:
-                        if total > 3:
-                            st.success(f"Nicely done!\nThere are a total of {total} no CTA unique articles in the content and a total of {art_count} URLs linked within this article.\n\nHere the links: {art_list}.", icon="✅")                
+                        st.error(f"There is only one internal link in the article.\n\nPlease add more relevant key content articles as internal links.", icon="🚨")
+                        st.warning(f"If this is a Fever branded article, please disregard this alert, as internal linking is not applied.", icon="⚠️") 
+                elif total < 0:
+                    st.error(f"There's no internal linking in the article. Please, add relevant key content articles as internal links.", icon="🚨")
+                    st.warning(f"If this is a Fever branded article, please disregard this alert, as internal linking is not applied.", icon="⚠️") 
+                elif total > 0 and total <= 3:
+                    st.warning(f"Please consider adding more unique articles as internal links.\n\n There are a total of {total} unique articles and a total of {art_count} URLs (one being the CTA) linked within this article.\n\n Here are the links: {art_list}.", icon="⚠️")
+                    st.warning(f"If this is a Fever branded article, please disregard this alert, as internal linking is not applied.", icon="⚠️")
                 else:
-                    if art_ucount < 1:
-                        st.error(f"There is no internal linking in the article. Please add relevant key content articles as internal links.", icon="🚨")
-                        st.warning(f"If this is a Fever branded article, please disregard this alert, as internal linking is not applied.", icon="⚠️")
-                    elif art_ucount > 0 and art_ucount <= 3:
-                        st.warning(f"Please consider adding more unique articles as internal links.\n\n There are a total of {art_ucount} unique articles and a total of {art_count} URLs linked within this article.\n\n Here are the links: {art_list}.", icon="⚠️")
-                        st.warning(f"If this is a Fever branded article, please disregard this alert, as internal linking is not applied.", icon="⚠️")
-                    else:
-                        st.success(f"Nicely done!.\nThere are a total of {total} unique articles and a total of {art_count} URLs linked within this article.\n Here are the links: {art_list}.", icon="✅")
-            except Exception as e:
-                st.error("Error: Unable to analyze the URL. Please, check that it's valid.")
+                    if total > 3:
+                        st.success(f"Nicely done!\nThere are a total of {total} no CTA unique articles in the content and a total of {art_count} URLs linked within this article.\n\nHere the links: {art_list}.", icon="✅")                
+            else:
+                if art_ucount < 1:
+                    st.error(f"There is no internal linking in the article. Please add relevant key content articles as internal links.", icon="🚨")
+                    st.warning(f"If this is a Fever branded article, please disregard this alert, as internal linking is not applied.", icon="⚠️")
+                elif art_ucount > 0 and art_ucount <= 3:
+                    st.warning(f"Please consider adding more unique articles as internal links.\n\n There are a total of {art_ucount} unique articles and a total of {art_count} URLs linked within this article.\n\n Here are the links: {art_list}.", icon="⚠️")
+                    st.warning(f"If this is a Fever branded article, please disregard this alert, as internal linking is not applied.", icon="⚠️")
+                else:
+                    st.success(f"Nicely done!.\nThere are a total of {total} unique articles and a total of {art_count} URLs linked within this article.\n Here are the links: {art_list}.", icon="✅")
+            # except Exception as e:
+            #     st.error("Error: Unable to analyze the URL. Please, check that it's valid.")
 
             st.subheader("CTA Checker:")
-            try:
+            # try:
                 # get_url = requests.get(url)
                 # soup = BeautifulSoup(get_url.text, "html.parser")                       
     
-                cta_count,cta_list = check_cta(soup)
-                if cta_count > 0:
-                    st.success(f"There is a CTA: {cta_list}", icon="✅")
-                    # st.info(f"That means that from the {art_ucount} links, one is the CTA.", icon="👀")
-                #     total=art_ucount-1
-                #     if total>1:
-                #         st.info(f"\nTotal amount of unique articles is {total}.", icon="👀")
-                #     elif total == 0:
-                #         st.error(f"There is no internal linking done in this article. Please, add internal linking throughout the content, linking to key content.", icon="🚨")
-                #     else:
-                #         st.warning(f"Total amount of unique articles is just {total}. Please, add more internal linking throughout the content", icon="⚠️")
-                else:
-                    st.error("There is no CTA. Please add one evergreen key organic content link as a CTA.", icon="🚨")
-            except Exception as e:
-                st.error("Error: Unable to analyze the URL. Please check that it's valid.")                
+            cta_count,cta_list = check_cta(soup)
+            if cta_count > 0:
+                st.success(f"There is a CTA: {cta_list}", icon="✅")
+                # st.info(f"That means that from the {art_ucount} links, one is the CTA.", icon="👀")
+            #     total=art_ucount-1
+            #     if total>1:
+            #         st.info(f"\nTotal amount of unique articles is {total}.", icon="👀")
+            #     elif total == 0:
+            #         st.error(f"There is no internal linking done in this article. Please, add internal linking throughout the content, linking to key content.", icon="🚨")
+            #     else:
+            #         st.warning(f"Total amount of unique articles is just {total}. Please, add more internal linking throughout the content", icon="⚠️")
+            else:
+                st.error("There is no CTA. Please add one evergreen key organic content link as a CTA.", icon="🚨")
+            # except Exception as e:
+            #     st.error("Error: Unable to analyze the URL. Please check that it's valid.")                
 
             st.subheader("Categories Count:")
-            try:
+            # try:
                 # get_url = requests.get(url)
                 # soup = BeautifulSoup(get_url.text, "html.parser") 
     
-                cat_ucount, cat_count = get_categories_count(soup)
-                if cat_count < 1:
-                    st.error("There are no categories. Please, add a max of two categories.", icon="🚨")
-                elif cat_count > 2:
-                    st.error("There are more than 2 categories. Please, limit it to one or two.", icon="🚨")
-                else:
-                    st.success(f"There is a total of {cat_ucount} categories in this article. Perfect!", icon="✅")
-            except Exception as e:
-                st.error("Error: Unable to analyze the URL. Please check that it's valid.") 
+            cat_ucount, cat_count = get_categories_count(soup)
+            if cat_count < 1:
+                st.error("There are no categories. Please, add a max of two categories.", icon="🚨")
+            elif cat_count > 2:
+                st.error("There are more than 2 categories. Please, limit it to one or two.", icon="🚨")
+            else:
+                st.success(f"There is a total of {cat_ucount} categories in this article. Perfect!", icon="✅")
+            # except Exception as e:
+            #     st.error("Error: Unable to analyze the URL. Please check that it's valid.") 
 
             st.subheader("Featured Image Size and Alt:") 
-            try:
+            # try:
                 # get_url = requests.get(url)
                 # soup = BeautifulSoup(get_url.text, "html.parser")                                 
                    
-                width = get_featured_image_width(soup)
-                alt = get_featured_image_alt(soup)
-                if width is not None:
-                    if width >= 1200:
-                        st.success(f"The featured image meets width requirements of at least 1200px wide: it is {width}px.\n\nThe Alt is: '{alt}'", icon="✅")
-                    else:
-                        st.warning(f"Remember: feature image must be at least 1200px wide.\n\nThe current featured image is {width}px wide.\n\nThe Alt is: '{alt}'", icon="⚠️")            
+            width = get_featured_image_width(soup)
+            alt = get_featured_image_alt(soup)
+            if width is not None:
+                if width >= 1200:
+                    st.success(f"The featured image meets width requirements of at least 1200px wide: it is {width}px.\n\nThe Alt is: '{alt}'", icon="✅")
                 else:
-                    st.error("The article has no featured image. Please add one of a minimum of 1200px wide.", icon="🚨")              
-            except Exception as e:
-                st.error("Error: Unable to analyze the URL. Please, check if it's valid.")   
+                    st.warning(f"Remember: feature image must be at least 1200px wide.\n\nThe current featured image is {width}px wide.\n\nThe Alt is: '{alt}'", icon="⚠️")            
+            else:
+                st.error("The article has no featured image. Please add one of a minimum of 1200px wide.", icon="🚨")              
+            # except Exception as e:
+            #     st.error("Error: Unable to analyze the URL. Please, check if it's valid.")   
             
             st.subheader("Images in content:")
             
