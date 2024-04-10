@@ -159,8 +159,8 @@ def main():
                 'Accept-Encoding':'gzip',
                 'Cache-Control':'no-cache',
                 'Pragma':'no-cache',
-                'x-seo-crawler':'*************'}
-            get_url = requests.get(url,headers)
+                'x-seo-crawler':'bebb296ec7bbf3a1cd81f4863e069de6'}
+            get_url = requests.get(url,headers=headers)
             # get_url = requests.get(url_head)
             st.info(f"prueba{get_url}")
             soup = BeautifulSoup(get_url.text, "html.parser")
