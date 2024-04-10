@@ -159,7 +159,7 @@ def main():
                 'Accept-Encoding':'gzip',
                 'Cache-Control':'no-cache',
                 'Pragma':'no-cache',
-                'x-seo-crawler':'bebb296ec7bbf3a1cd81f4863e069de6'}
+                'x-seo-crawler':'*************'}
             get_url = requests.get(url,headers)
             # get_url = requests.get(url_head)
             st.info(f"prueba{get_url}")
