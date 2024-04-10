@@ -163,7 +163,7 @@ def main():
             get_url = requests.get(url,headers=headers)
             # get_url = requests.get(url_head)
             st.info(f"prueba{get_url}")
-            soup = BeautifulSoup(get_url.text, "html.parser")
+            soup = BeautifulSoup(get_url.content, "html.parser")
             st.info(f"prueba{soup}")
 
             st.subheader("URL friendliness")
