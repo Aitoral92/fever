@@ -153,7 +153,7 @@ def main():
 
     if st.button("Analyze"):
         if url:
-            url_head = url + '?=Accept=text%2Fhtml%2Capplication%2Fxhtml%2Bxml%2Capplication%2Fxml%3Bq%3D0.9%2C%2A%2F%2A%3Bq%3D0.8&Accept-Encoding=gzip&Cache-Control=no-cache&Pragma=no-cache&x-seo-crawler'
+            url_head = url + '?=Accept=text%2Fhtml%2Capplication%2Fxhtml%2Bxml%2Capplication%2Fxml%3Bq%3D0.9%2C%2A%2F%2A%3Bq%3D0.8&Accept-Encoding=gzip&Cache-Control=no-cache&Pragma=no-cache&x-seo-crawler=bebb296ec7bbf3a1cd81f4863e069de6'
             # headers = {
             #     'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36',
             #     'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
