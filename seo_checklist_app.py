@@ -153,7 +153,15 @@ def main():
 
     if st.button("Analyze"):
         if url:
-            get_url = requests.get(url)
+            headers = {
+                'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+                'Accept-Encoding':'gzip',
+                'Cache-Control':'no-cache',
+                'Pragma':'no-cache',
+                'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36',
+                'x-seo-crawler':'bebb296ec7bbf3a1cd81f4863e069de6'}
+            get_url = requests.get(url,headers)
+            # get_url = requests.get(url)
             st.info(f"prueba{get_url}")
             soup = BeautifulSoup(get_url.content, "html.parser")
             st.info(f"prueba{soup}")
