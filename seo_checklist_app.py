@@ -158,7 +158,7 @@ def main():
                        'Cache-Control':'no-cache',
                        'Pragma':'no-cache',
                        'x-seo-crawler':'bebb296ec7bbf3a1cd81f4863e069de6'}
-            get_url = requests.get(url)
+            get_url = requests.get(url, headers)
             st.info(f"prueba{get_url}")
             soup = BeautifulSoup(get_url.content, "html.parser")
             st.info(f"prueba{soup}")
