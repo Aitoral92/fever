@@ -175,12 +175,20 @@ def main():
                        'Cache-Control':'no-cache',
                        'Pragma':'no-cache',
                        'x-seo-crawler':'bebb296ec7bbf3a1cd81f4863e069de6'}
-            asession = AsyncHTMLSession()
-            get_url = await asession.get(url, headers=headers)
+            # sync
+            get_url = ses.get(url, headers=headers)
+            get_url.html.render()
             st.info(f"prueba{get_url}")
-            await get_url.html.arender()
+            asession = AsyncHTMLSession()
             soup = BeautifulSoup(get_url.text, "html.parser") 
             st.info(f"prueba{soup}")
+            
+            # Async
+            # get_url = await asession.get(url, headers=headers)
+            # st.info(f"prueba{get_url}")
+            # await get_url.html.arender()
+            # soup = BeautifulSoup(get_url.text, "html.parser") 
+            # st.info(f"prueba{soup}")
 
             st.subheader("URL friendliness")
             # try:
