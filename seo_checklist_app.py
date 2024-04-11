@@ -175,7 +175,7 @@ def main():
                        'Accept-Encoding':'gzip',
                        'Cache-Control':'no-cache',
                        'Pragma':'no-cache',
-                       'x-seo-crawler':st.secrets["X_SEO_CRAWLER"]}
+                       'x-seo-crawler':st.secrets['custom_header']}
             # sync
             get_url = ses.get(url, headers=headers)
             # get_url.html.render()
