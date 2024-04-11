@@ -9,6 +9,7 @@ import streamlit as st
 import json
 import requests_html
 from requests_html import AsyncHTMLSession
+import os
 
 # def count_hyphens_and_digits_in_url(url):
 #     hyphen_count = url.count("-")
@@ -150,6 +151,7 @@ def get_total_image_count(soup):
     return img_count, alt_count, alt_list, ig_count, total
 
 def main():
+    st.write("x-seo-crawler:", st.secrets["X_SEO_CRAWLER"])
     st.title("SEO Checker")
     url = st.text_input("Paste the URL and press 'Analyze' button:")
 
@@ -174,7 +176,7 @@ def main():
                        'Accept-Encoding':'gzip',
                        'Cache-Control':'no-cache',
                        'Pragma':'no-cache',
-                       'x-seo-crawler':'bebb296ec7bbf3a1cd81f4863e069de6'}
+                       x-seo-crawler}
             # sync
             get_url = ses.get(url, headers=headers)
             # get_url.html.render()
