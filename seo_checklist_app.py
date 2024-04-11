@@ -177,7 +177,7 @@ def main():
                        'x-seo-crawler':'bebb296ec7bbf3a1cd81f4863e069de6'}
             # sync
             get_url = ses.get(url, headers=headers)
-            get_url.html.render()
+            # get_url.html.render()
             st.info(f"prueba{get_url}")
             asession = AsyncHTMLSession()
             soup = BeautifulSoup(get_url.text, "html.parser") 
