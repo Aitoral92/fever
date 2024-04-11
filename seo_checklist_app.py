@@ -169,14 +169,13 @@ def main():
             # soup = BeautifulSoup(get_url.content, "html.parser")
             # st.info(f"prueba{soup}")
             
-            x_seo_crawler=st.secrets.seo_crawl.custom_header
             ses = requests_html.HTMLSession()
             headers = {'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36',
                        'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
                        'Accept-Encoding':'gzip',
                        'Cache-Control':'no-cache',
                        'Pragma':'no-cache',
-                       'x-seo-crawler':x_seo_crawler}
+                       'x-seo-crawler':st.secrets["custom_header"]}
             # sync
             get_url = ses.get(url, headers=headers)
             # get_url.html.render()
