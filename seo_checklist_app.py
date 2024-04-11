@@ -151,8 +151,6 @@ def get_total_image_count(soup):
     return img_count, alt_count, alt_list, ig_count, total
 
 def main():
-    [db_credentials]
-    x-seo-crawler = "X_SEO_CRAWLER"
     st.title("SEO Checker")
     url = st.text_input("Paste the URL and press 'Analyze' button:")
 
