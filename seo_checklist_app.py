@@ -178,9 +178,9 @@ def main():
             # sync
             get_url = ses.get(url, headers=headers)
             # get_url.html.render()
-            st.info(f"prueba{get_url}")
+            # st.info(f"prueba{get_url}")
             soup = BeautifulSoup(get_url.text, "html.parser") 
-            st.info(f"prueba{soup}")
+            # st.info(f"prueba{soup}")
             # 
             # Async
             # get_url = await asession.get(url, headers=headers)
