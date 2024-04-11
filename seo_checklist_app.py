@@ -147,7 +147,8 @@ def get_total_image_count(soup):
     
     total=img_count+ig_count
     
-    return img_count, alt_count, alt_list, ig_count, total, all_content
+    # return img_count, alt_count, alt_list, ig_count, total
+    return all_content
 
 def main():
     st.title("SEO Checker")
@@ -360,7 +361,8 @@ def main():
             get_url = requests.get(url)
             soup = BeautifulSoup(get_url.text, "html.parser") 
 
-            img_count, alt_count, alt_list, ig_count, total, all_content = get_total_image_count(soup)
+            # img_count, alt_count, alt_list, ig_count, total = get_total_image_count(soup)
+            all_content = get_total_image_count(soup)
             st.info(f"prueba{all_content}")
             
             if img_count <=1 and ig_count is not 0:
