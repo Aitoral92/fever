@@ -4,3 +4,4 @@ polyfuzz==0.4.2
 Requests==2.31.0
 streamlit==1.32.2
 requests-html==0.10.0
+lxml_html_clean==0.1.1
