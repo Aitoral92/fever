@@ -151,7 +151,8 @@ def get_total_image_count(soup):
     return img_count, alt_count, alt_list, ig_count, total
 
 def main():
-    x-seo-crawler==st.write("x-seo-crawler:", st.secrets["X_SEO_CRAWLER"])
+    [db_credentials]
+    x-seo-crawler = "X_SEO_CRAWLER"
     st.title("SEO Checker")
     url = st.text_input("Paste the URL and press 'Analyze' button:")
 
@@ -176,7 +177,7 @@ def main():
                        'Accept-Encoding':'gzip',
                        'Cache-Control':'no-cache',
                        'Pragma':'no-cache',
-                       x-seo-crawler}
+                       'x-seo-crawler':st.secrets["X_SEO_CRAWLER"]}
             # sync
             get_url = ses.get(url, headers=headers)
             # get_url.html.render()
