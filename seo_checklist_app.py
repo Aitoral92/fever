@@ -360,9 +360,9 @@ def main():
             # sync
             get_url = ses.get(url, headers=headers)
             # get_url.html.render()
-            st.info(f"prueba{get_url}")
+            # st.info(f"prueba{get_url}")
             soup = BeautifulSoup(get_url.text, "html.parser") 
-            st.info(f"prueba{soup}")
+            # st.info(f"prueba{soup}")
 
             img_count, alt_count, alt_list, ig_count, total = get_total_image_count(soup)
             
