@@ -179,7 +179,6 @@ def main():
             get_url = ses.get(url, headers=headers)
             # get_url.html.render()
             st.info(f"prueba{get_url}")
-            asession = AsyncHTMLSession()
             soup = BeautifulSoup(get_url.text, "html.parser") 
             st.info(f"prueba{soup}")
             
