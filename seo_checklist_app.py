@@ -169,7 +169,6 @@ def main():
             # soup = BeautifulSoup(get_url.content, "html.parser")
             # st.info(f"prueba{soup}")
             
-            [seo_header]
             x_seo_crawler="custom_header"
             ses = requests_html.HTMLSession()
             headers = {'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36',
