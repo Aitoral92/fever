@@ -147,8 +147,7 @@ def get_total_image_count(soup):
     
     total=img_count+ig_count
     
-    # return img_count, alt_count, alt_list, ig_count, total
-    return all_content
+    return img_count, alt_count, alt_list, ig_count, total
 
 def main():
     st.title("SEO Checker")
@@ -358,12 +357,14 @@ def main():
             
             st.subheader("Images in content:")
             
-            get_url = requests.get(url)
+            # sync
+            get_url = ses.get(url, headers=headers)
+            # get_url.html.render()
+            st.info(f"prueba{get_url}")
             soup = BeautifulSoup(get_url.text, "html.parser") 
+            st.info(f"prueba{soup}")
 
-            # img_count, alt_count, alt_list, ig_count, total = get_total_image_count(soup)
-            all_content = get_total_image_count(soup)
-            st.info(f"prueba{all_content}")
+            img_count, alt_count, alt_list, ig_count, total = get_total_image_count(soup)
             
             if img_count <=1 and ig_count is not 0:
                 st.error(f"All images (except for the featured one) are Instagram embed ({ig_count}). Please add uploaded images instead, where possible.", icon="🚨")
