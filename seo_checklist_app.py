@@ -7,6 +7,8 @@ from urllib.parse import urlparse
 from urllib.request import urlopen as uReq
 import streamlit as st
 import json
+import requests_html
+from requests_html import AsyncHTMLSession
 
 # def count_hyphens_and_digits_in_url(url):
 #     hyphen_count = url.count("-")
@@ -153,17 +155,30 @@ def main():
 
     if st.button("Analyze"):
         if url:
-            headers = {
-                'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36',
-                'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-                'Accept-Encoding':'gzip',
-                'Cache-Control':'no-cache',
-                'Pragma':'no-cache',
-                'x-seo-crawler':'*****'}
-            get_url = requests.get(url,headers=headers)
-            # get_url = requests.get(url_head)
+            # headers = {
+            #     'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36',
+            #     'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+            #     'Accept-Encoding':'gzip',
+            #     'Cache-Control':'no-cache',
+            #     'Pragma':'no-cache',
+            #     'x-seo-crawler':'*****'}
+            # get_url = requests.get(url,headers=headers)
+            # # get_url = requests.get(url_head)
+            # st.info(f"prueba{get_url}")
+            # soup = BeautifulSoup(get_url.content, "html.parser")
+            # st.info(f"prueba{soup}")
+
+
+            headers = {'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+                       'Accept-Encoding':'gzip',
+                       'Cache-Control':'no-cache',
+                       'Pragma':'no-cache',
+                       'x-seo-crawler':'bebb296ec7bbf3a1cd81f4863e069de6'}
+            asession = AsyncHTMLSession()
+            get_url = await asession.get(url, headers=headers)
             st.info(f"prueba{get_url}")
-            soup = BeautifulSoup(get_url.content, "html.parser")
+            await get_url.html.arender()
+            soup = BeautifulSoup(get_url.text, "html.parser") 
             st.info(f"prueba{soup}")
 
             st.subheader("URL friendliness")
