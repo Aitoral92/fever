@@ -230,12 +230,13 @@ def check_cta(soup):
     # # Create a copy of soup so it does not interfare with internal links count
     # soup_copy = BeautifulSoup(str(soup), "html.parser")
     
-    all_content = soup.find("div", class_="smn-tracklink-cta")
+    all_content = soup.find_all("div", class_="smn-tracklink-cta")
+    all_content_last_cta = all_content[-1]
 
     cta_count = 0
     cta_list = []
     try:
-        for a in all_content.find_all('a', href=True):
+        for a in all_content_last_cta.find_all('a', href=True):
             cta_count += 1
             cta_list.append(a['href'])
     except AttributeError:
