@@ -587,7 +587,7 @@ def main():
                 elif len_secondary > 210:
                     st.warning(f"Secondary title seems to be too long. Please ensure its length is between one and a half lines to two lines.\n\Current Secondary Title:'{secondary}'", icon="⚠️")
                 else:
-                    if len_secondary > 120 and len_secondary < 210:
+                    if len_secondary > 109 and len_secondary < 211:
                         st.success(f"Looks like Secondary Title is OPTIMIZED in terms of length. Well done!\n\nSecondary Title: '{secondary}'", icon="✅")
             
             except Exception as e:
@@ -610,9 +610,9 @@ def main():
                     kw_par  = ' '.join(word for word in par_full.split() if word.lower() not in stopwords)
 
                     if kw_cln.lower() in kw_par.lower():
-                        st.success(f"La kewyword '{kw}' appears in the first paragraph of the article", icon="✅")
+                        st.success(f"The keyword '{kw}' appears in the first paragraph of the article", icon="✅")
                     else:
-                        st.warning(f"La kewyword '{kw}' does not appear in the first paragraph of the article, please try to add it in the first paragraph", icon="⚠️")
+                        st.warning(f"The keyword '{kw}' does not appear in the first paragraph of the article, please try to add it in the first paragraph", icon="⚠️")
             except Exception as e:
                 st.error("Error: Unable to analyze the URL. Please, check that it's valid.")
 
