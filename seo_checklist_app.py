@@ -570,9 +570,9 @@ def main():
             # Check KW Meta-Description
             kw_metad  = ' '.join(word for word in metad.split() if word.lower() not in stopwords)
             if kw_cln.lower() in kw_metad.lower():
-                st.success(f"La kewyword '{kw}' está en la MetaDescription", icon="✅")
+                st.success(f"The keyword '{kw}' is in the MetaDescription", icon="✅")
             else:
-                st.error(f"La kewyword '{kw}' NO está en la MetaDescription", icon="🚨")
+                st.error(f"The keyword '{kw}' IS NOT in the MetaDescription", icon="🚨")
 
 
             st.subheader("Secondary Title Length:")
@@ -595,14 +595,14 @@ def main():
             # Check kw secondary title
             kw_secon  = ' '.join(word for word in secondary.split() if word.lower() not in stopwords)
             if kw_cln.lower() in kw_secon.lower():
-                st.warning(f"La kewyword '{kw}' está en el secondary title, although it's okay, try to use a secondary kw instead", icon="⚠️")
+                st.warning(f"The keyword '{kw}' it's in the secondary title, although it's fine, try to use a secondary keyword instead", icon="⚠️")
             else:
-                st.warning(f"La kewyword '{kw}' no está en el secondary title, which is okay, as long as we are using a secondary KW, please make sure about it.", icon="⚠️")
+                st.warning(f"The keywrod '{kw}' is not in the secondary title, which is okay, as long as we are using a secondary keyword instead, please make sure of it.", icon="⚠️")
             
             # Check kw in 1st paragraph
-            st.subheader("KW is in 1st paragraph")
             try:
-                if kw:    
+                if kw:
+                    st.subheader("Is the keyword in the first paragraph?")    
                     par_full = kw_in_first_par(soup)
 
                     kw_par  = ' '.join(word for word in par_full.split() if word.lower() not in stopwords)
