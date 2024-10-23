@@ -568,11 +568,12 @@ def main():
                 st.error("Error: Unable to analyze the URL. Please check that it's valid.")                
 
             # Check KW Meta-Description
-            kw_metad  = ' '.join(word for word in metad.split() if word.lower() not in stopwords)
-            if kw_cln.lower() in kw_metad.lower():
-                st.success(f"The keyword '{kw}' is in the MetaDescription", icon="✅")
-            else:
-                st.error(f"The keyword '{kw}' IS NOT in the MetaDescription", icon="🚨")
+            if kw:
+                kw_metad  = ' '.join(word for word in metad.split() if word.lower() not in stopwords)
+                if kw_cln.lower() in kw_metad.lower():
+                    st.success(f"The keyword '{kw}' is in the MetaDescription", icon="✅")
+                else:
+                    st.error(f"The keyword '{kw}' IS NOT in the MetaDescription", icon="🚨")
 
 
             st.subheader("Secondary Title Length:")
@@ -593,11 +594,12 @@ def main():
                 st.error("Error: Unable to analyze the URL. Please, check that it's valid.")
 
             # Check kw secondary title
-            kw_secon  = ' '.join(word for word in secondary.split() if word.lower() not in stopwords)
-            if kw_cln.lower() in kw_secon.lower():
-                st.warning(f"The keyword '{kw}' it's in the secondary title, although it's fine, try to use a secondary keyword instead", icon="⚠️")
-            else:
-                st.warning(f"The keywrod '{kw}' is not in the secondary title, which is okay, as long as we are using a secondary keyword instead, please make sure of it.", icon="⚠️")
+            if kw:
+                kw_secon  = ' '.join(word for word in secondary.split() if word.lower() not in stopwords)
+                if kw_cln.lower() in kw_secon.lower():
+                    st.warning(f"The keyword '{kw}' it's in the secondary title, although it's fine, try to use a secondary keyword instead", icon="⚠️")
+                else:
+                    st.warning(f"The keyword '{kw}' is not in the secondary title, which is okay, as long as we are using a secondary keyword instead, please make sure of it.", icon="⚠️")
             
             # Check kw in 1st paragraph
             try:
