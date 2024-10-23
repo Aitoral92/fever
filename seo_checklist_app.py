@@ -472,18 +472,18 @@ def main():
 
     if st.button("Analyze"):
         if url:
-            ses = requests_html.HTMLSession()
-            headers = {'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36',
-                       'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-                       'Accept-Encoding':'gzip',
-                       'Cache-Control':'no-cache',
-                       'Pragma':'no-cache',
-                       'x-seo-crawler':st.secrets["CUSTOM_HEADER"]}
-            # sync
-            get_url = ses.get(url, headers=headers)
-            # get_url.html.render()
-            # st.info(f"prueba{get_url}")
-            soup = BeautifulSoup(get_url.text, "html.parser") 
+            # ses = requests_html.HTMLSession()
+            # headers = {'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36',
+            #            'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+            #            'Accept-Encoding':'gzip',
+            #            'Cache-Control':'no-cache',
+            #            'Pragma':'no-cache',
+            #            'x-seo-crawler':st.secrets["CUSTOM_HEADER"]}
+            # # sync
+            # get_url = ses.get(url, headers=headers)
+            # # get_url.html.render()
+            # # st.info(f"prueba{get_url}")
+            # soup = BeautifulSoup(get_url.text, "html.parser") 
 
             get_url = requests.get(url)
             soup = BeautifulSoup(get_url.text, "html.parser")
@@ -540,15 +540,15 @@ def main():
             except Exception as e:
                 st.error("Error: Unable to analyze the URL. Please check that it's valid.")
 
-                # Check KW in SEO Title
-                if kw:
-                    seot_cln = ' '.join(word for word in seot.split() if word.lower() not in stopwords)
-                    # kw_cln = kw.lower()
-                    if len(seot_cln) > 0:
-                        if kw_cln.lower() in seot_cln.lower():
-                            st.success(f"The keyword'{kw}' is in the SEO Title", icon="✅")
-                        else:
-                            st.error(f"La kewyword '{kw}' NO está en el SEO Title", icon="🚨")
+            # Check KW in SEO Title
+            if kw:
+                seot_cln = ' '.join(word for word in seot.split() if word.lower() not in stopwords)
+                # kw_cln = kw.lower()
+                if len(seot_cln) > 0:
+                    if kw_cln.lower() in seot_cln.lower():
+                        st.success(f"The keyword'{kw}' is in the SEO Title", icon="✅")
+                    else:
+                        st.error(f"La kewyword '{kw}' NO está en el SEO Title", icon="🚨")
 
             
             st.subheader("Meta Description Length:")
@@ -567,12 +567,12 @@ def main():
             except Exception as e:
                 st.error("Error: Unable to analyze the URL. Please check that it's valid.")                
 
-                # Check KW Meta-Description
-                kw_metad  = ' '.join(word for word in metad.split() if word.lower() not in stopwords)
-                if kw_cln.lower() in kw_metad.lower():
-                    st.success(f"La kewyword '{kw}' está en la MetaDescription", icon="✅")
-                else:
-                    st.error(f"La kewyword '{kw}' NO está en la MetaDescription", icon="🚨")
+            # Check KW Meta-Description
+            kw_metad  = ' '.join(word for word in metad.split() if word.lower() not in stopwords)
+            if kw_cln.lower() in kw_metad.lower():
+                st.success(f"La kewyword '{kw}' está en la MetaDescription", icon="✅")
+            else:
+                st.error(f"La kewyword '{kw}' NO está en la MetaDescription", icon="🚨")
 
 
             st.subheader("Secondary Title Length:")
@@ -592,12 +592,12 @@ def main():
             except Exception as e:
                 st.error("Error: Unable to analyze the URL. Please, check that it's valid.")
 
-                # Check kw secondary title
-                kw_secon  = ' '.join(word for word in secondary.split() if word.lower() not in stopwords)
-                if kw_cln.lower() in kw_secon.lower():
-                    st.warning(f"La kewyword '{kw}' está en el secondary title, although it's okay, try to use a secondary kw instead", icon="⚠️")
-                else:
-                    st.warning(f"La kewyword '{kw}' no está en el secondary title, which is okay, as long as we are using a secondary KW, please make sure about it.", icon="⚠️")
+            # Check kw secondary title
+            kw_secon  = ' '.join(word for word in secondary.split() if word.lower() not in stopwords)
+            if kw_cln.lower() in kw_secon.lower():
+                st.warning(f"La kewyword '{kw}' está en el secondary title, although it's okay, try to use a secondary kw instead", icon="⚠️")
+            else:
+                st.warning(f"La kewyword '{kw}' no está en el secondary title, which is okay, as long as we are using a secondary KW, please make sure about it.", icon="⚠️")
             
             # Check kw in 1st paragraph
             st.subheader("KW is in 1st paragraph")
