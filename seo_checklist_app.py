@@ -213,9 +213,20 @@ def feverup_plans_check (soup, art_count):
     else:
         feverup_percentage = 0
 
-    h2_count = h2_counter(soup)
+    # h2_count = h2_counter(soup)
+    # if h2_count:
+    #     feverup_percentage = (feverup_count*100)/h2_count
+    
+    
+    h2_count = 0
+    # h2_list = []
+    for h2 in all_content.find_all('h2'):
+        h2_count +=1
+
     if h2_count:
         feverup_percentage = (feverup_count*100)/h2_count
+
+    feverup_percentage = round(feverup_percentage, 2)
         
 
     # Muestra la lista de enlaces expirados (si no está vacía)
@@ -224,7 +235,7 @@ def feverup_plans_check (soup, art_count):
     #     for exp_link in exp_plans:
     #         print(exp_link)
 
-    return feverup_count, feverup_percentage, exp_plans, h2_count
+    return feverup_count, feverup_percentage, exp_plans
 
 def check_cta(soup):
     # # Create a copy of soup so it does not interfare with internal links count
@@ -655,13 +666,13 @@ def main():
             #                 break
             #     # return kw_count, word_count, kw_len            
 
-                        
+            # Internal Links            
             st.subheader("Internal Links:")
         # try:
             # get_url = requests.get(url)
             # soup = BeautifulSoup(get_url.text, "html.parser")
             art_ucount, art_count, art_list= get_internal_links_count(soup, url)
-            feverup_count, feverup_percentage, exp_plans, h2_count = feverup_plans_check(soup, art_count)
+            feverup_count, feverup_percentage, exp_plans = feverup_plans_check(soup, art_count)
             
             cta_count,cta_list = check_cta(soup)
             
@@ -671,10 +682,12 @@ def main():
                 # st.error(f"feverup percentage {feverup_percentage}")
                 if feverup_percentage > 30:
                     st.error(f"The percentage of Fever plans in this article exceeds the allowed 30%. There are a total of {feverup_count} plans, making a {feverup_percentage}% of the total.", icon="🚨")
+                else:
+                    st.info(f"The percentage of Fever plans in this article is {feverup_percentage}, with a total of {feverup_count} plans in it. You can add more as long as the total percentage does not exceed the 30% mark.", icon="👀")
                 if len(exp_plans) > 0:
                     st.warning(f"There are some expired Fever plans linked in the article, please remove or substitute them. Here the expired plans:\n Here are the links: {exp_plans}.", icon="⚠️")
             else:
-                    st.info(f"There are no Fever plans linked in the article.", icon="⚠️")
+                    st.info(f"There are no Fever plans linked in the article.", icon="👀")
             if cta_count > 0:
                 total = art_ucount - cta_count
                 if total == 0:
@@ -748,7 +761,7 @@ def main():
                    
                 width = get_featured_image_width(soup)
                 alt = get_featured_image_alt(soup)
-                if width is not None:
+                if width != None:
                     if width >= 1200:
                         st.success(f"The featured image meets width requirements of at least 1200px wide: it is {width}px.\n\nThe Alt is: '{alt}'", icon="✅")
                     else:
@@ -765,7 +778,7 @@ def main():
 
             img_count, alt_count, alt_list, ig_count, total = get_total_image_count(soup)
                 
-            if img_count <=1 and ig_count is not 0:
+            if img_count <=1 and ig_count != 0:
                 st.error(f"All images (except for the featured one) are Instagram embed ({ig_count}). Please add uploaded images instead, where possible.", icon="🚨")
             elif img_count > 1 and ig_count < 1:    
                 if alt_count == img_count:
