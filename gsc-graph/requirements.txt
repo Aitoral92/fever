@@ -1,0 +1,6 @@
+google_api_python_client==2.79.0
+google_auth_oauthlib==1.0.0
+pandas==2.0.3
+plotly==5.16.1
+protobuf==6.30.0
+streamlit==1.32.2
