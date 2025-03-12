@@ -469,7 +469,7 @@ def main():
     st.set_page_config(page_title="Análisis Search Console", layout="wide")
 
     # Leer parámetros de la URL para ver si Google nos ha devuelto 'code'
-    query_params = st.query_params()
+    query_params = st.query_params
 
     # 1) Si ya tenemos credenciales en session_state, vamos directos a la app
     if "google_creds" in st.session_state:
