@@ -471,9 +471,16 @@ def main():
     if "google_creds" in st.session_state:
         try:
             run_analysis_app()
-            if st.button("Cerrar sesión"):
-                del st.session_state["google_creds"]
-                st.experimental_rerun()
+            if st.button("Iniciar sesión con Google"):
+                auth_url = get_authorization_url()
+                link_html = f"""
+                <a href="{auth_url}" target="_self" id="go_link"></a>
+                <script>
+                    document.getElementById("go_link").click();
+                </script>
+                """
+                st.markdown(link_html, unsafe_allow_html=True)
+                st.stop()
         except Exception as e:
             st.error(f"Error usando credenciales: {e}")
             if st.button("Forzar Logout"):
