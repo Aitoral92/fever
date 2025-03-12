@@ -212,4 +212,276 @@ def show_plot(df_aggregated: pd.DataFrame, regex_value: str, window: int, rplog:
         )
         fig.add_shape(
             type="rect",
-        
+            x0=date_released,
+            y0=0,
+            x1=end_date,
+            y1=max_clicks,
+            fillcolor="red",
+            opacity=0.3,
+            line=dict(width=0),
+        )
+        fig.add_trace(go.Scatter(
+            x=[date_released + width / 2],
+            y=[max_clicks],
+            text=[value],
+            mode="text",
+            showlegend=False
+        ))
+
+    df_aggregated['daily_click_rate'] = df_aggregated['clicks'] / (df_aggregated['date'].diff().dt.days + 1)
+    average_daily_clicks = df_aggregated['daily_click_rate'].mean()
+
+    fig.update_layout(
+        title=f'URL - {regex_value}.<br>Total Clicks: {total_clicks} '
+              f'- Daily clicks AVG: {average_daily_clicks:.2f}',
+        xaxis_title='Fecha',
+        yaxis_title='Suma Total de Clicks',
+        width=800,
+        height=400
+    )
+
+    st.plotly_chart(fig)
+
+
+# ==========================
+# 3) LÓGICA PRINCIPAL DE LA APP
+# ==========================
+def run_analysis_app():
+    st.title("Análisis de Clicks por Día (Google Search Console)")
+
+    # repost_log
+    rplog = pd.read_csv("repost_log.csv")
+    rplog = rplog[rplog["DS_POSTING_TYPE"] == "Repost"].drop(columns=[
+        'ID_WPS_ARTICLE', 'ID_WPS_PAGE', 'AUTHOR',
+        'ID_CALENDAR_DAY_POSTING', 'DT_DATE_POSTING_NEXT',
+        'ID_CALENDAR_DAY_POSTING_NEXT'
+    ], errors='ignore')
+
+    # Ajustar fecha
+    rplog['DT_DATE_POSTING'] = pd.to_datetime(rplog['DT_DATE_POSTING'], errors='coerce')
+    rplog['DT_DATE_POSTING'] = rplog['DT_DATE_POSTING'].dt.strftime('%Y-%m-%d')
+
+    st.write("Ingresa las URLs separadas por espacio:")
+    url_input = st.text_area("", value="", key="urls_input")
+    url_list = url_input.split()
+
+    website = st.text_input(
+        "Inserta la URL del sitio web (formato: https://tusitio.com/)",
+        value=""
+    )
+
+    window = st.number_input("Window for moving avg:", min_value=1, value=28)
+
+    default_end = date.today() - timedelta(days=3)
+    default_start = default_end - timedelta(days=365)
+
+    start_date = st.date_input('Fecha de inicio', default_start)
+    end_date = st.date_input('Fecha final', default_end)
+    start_date_str = start_date.strftime("%Y-%m-%d")
+    end_date_str = end_date.strftime("%Y-%m-%d")
+
+    rplog = rplog[
+        (rplog['DT_DATE_POSTING'] >= start_date_str) &
+        (rplog['DT_DATE_POSTING'] <= end_date_str)
+    ]
+
+    pattern = r"https?://[^/]+/([^/]+)/"
+    rplog['URL_SHRT'] = rplog['CD_WPS_URL'].apply(
+        lambda url: "/" + re.search(pattern, url).group(1) + "/" if re.search(pattern, url) else None
+    )
+
+    if not website:
+        st.warning("Por favor, ingresa la URL del sitio web para Search Console.")
+        st.stop()
+
+    # Extraer partes
+    extracted_parts = []
+    for url in url_list:
+        match = re.search(pattern, url)
+        if match:
+            extracted_parts.append("/" + match.group(1) + "/")
+    regex = "|".join(extracted_parts)
+
+    if not extracted_parts:
+        st.warning("No se encontraron patrones en las URLs ingresadas.")
+        st.stop()
+
+    # Autenticación (ya estamos logueados si se ejecuta esto)
+    creds = st.session_state["google_creds"]
+    webmasters_service = build_webmasters_service(creds)
+
+    # Troceo de regex si es largo
+    regex_list = []
+    if len(regex) > 8192:
+        pass  # tu lógica
+    elif len(regex) > 4096:
+        pass  # tu lógica
+    else:
+        regex_list.append(regex)
+
+    result_dfs = []
+    for sub_regex in regex_list:
+        body = {
+            'startDate': start_date_str,
+            'endDate': end_date_str,
+            'dimensions': ["date", "page"],
+            "dimensionFilterGroups": [
+                {
+                    "groupType": "and",
+                    "filters": [
+                        {
+                            "dimension": "page",
+                            "operator": "includingRegex",
+                            "expression": sub_regex
+                        }
+                    ]
+                }
+            ],
+            'rowLimit': 25000,
+            'startRow': 0
+        }
+
+        response = webmasters_service.searchanalytics().query(
+            siteUrl=website, body=body
+        ).execute()
+
+        rows = response.get('rows', [])
+        if not rows:
+            st.warning(f"No se encontraron datos para sub-regex: {sub_regex}")
+            continue
+
+        df_data = []
+        for r in rows:
+            date_x = r['keys'][0]
+            page_x = r['keys'][1]
+            df_data.append({
+                'date': date_x,
+                'page': page_x,
+                'clicks': r['clicks'],
+                'impressions': r['impressions'],
+                'ctr': r['ctr'],
+                'position': r['position']
+            })
+
+        sub_df = pd.DataFrame(df_data)
+        result_dfs.append(sub_df)
+
+    if not result_dfs:
+        st.warning("No se encontraron datos con ninguna de las expresiones regulares.")
+        return
+
+    resultados = pd.concat(result_dfs, ignore_index=True)
+    resultados['date'] = pd.to_datetime(resultados['date'])
+    resultados.sort_values('date', inplace=True)
+
+    # Gráfico general
+    show_plot_all(resultados)
+
+    # Gráficos individuales
+    for regex_value in extracted_parts:
+        body = {
+            'startDate': start_date_str,
+            'endDate': end_date_str,
+            'dimensions': ["date", "page"],
+            "dimensionFilterGroups": [
+                {
+                    "filters": [
+                        {
+                            "dimension": "page",
+                            "operator": "includingRegex",
+                            "expression": regex_value
+                        }
+                    ]
+                }
+            ],
+            'rowLimit': 25000,
+            'startRow': 0
+        }
+        response = webmasters_service.searchanalytics().query(
+            siteUrl=website, body=body
+        ).execute()
+        rows = response.get('rows', [])
+
+        if not rows:
+            st.warning(f"No se encontraron datos para la URL (o subregex): {regex_value}")
+            continue
+
+        df_data = []
+        for r in rows:
+            date_x = r['keys'][0]
+            page_x = r['keys'][1]
+            df_data.append({
+                'date': date_x,
+                'page': page_x,
+                'clicks': r['clicks'],
+                'impressions': r['impressions'],
+                'ctr': r['ctr'],
+                'position': r['position']
+            })
+
+        df = pd.DataFrame(df_data)
+        df['date'] = pd.to_datetime(df['date'])
+        df_aggregated = df.groupby('date')['clicks'].sum().reset_index()
+
+        show_plot(df_aggregated, regex_value, window, rplog)
+
+
+def main():
+    st.set_page_config(page_title="Análisis Search Console", layout="wide")
+
+    query_params = st.query_params
+
+    if "google_creds" in st.session_state:
+        try:
+            run_analysis_app()
+            if st.button("Cerrar sesión"):
+                del st.session_state["google_creds"]
+                st.experimental_rerun()
+        except Exception as e:
+            st.error(f"Error usando credenciales: {e}")
+            if st.button("Forzar Logout"):
+                del st.session_state["google_creds"]
+                st.experimental_rerun()
+    else:
+        # Si no tenemos credenciales, comprobamos si Google ha devuelto code
+        if "code" in query_params and "state" in query_params:
+            code = query_params["code"][0]
+            state = query_params["state"][0]
+
+            if state != st.session_state.get("oauth_state"):
+                st.error("State inválido o expirado. Intenta de nuevo.")
+            else:
+                try:
+                    creds = exchange_code_for_credentials(code, state)
+                    st.session_state["google_creds"] = creds
+                    st.experimental_rerun()
+                except Exception as e:
+                    st.error(f"Error al intercambiar code: {e}")
+
+        else:
+            # Mostrar un enlace con target="_self" en lugar de st.markdown() normal
+            st.title("Login con Google para Search Console")
+
+            auth_url = None
+            if st.button("Generar URL de login"):
+                auth_url = get_authorization_url()
+
+            if auth_url:
+                # Renderizamos un link HTML con target="_self"
+                st.markdown(
+                    f"""
+                    <a style="font-size:18px; font-weight:bold;
+                              background-color:#4CAF50; color:white; padding:10px;
+                              text-decoration:none; border-radius:5px;"
+                       href="{auth_url}"
+                       target="_self">
+                       Iniciar sesión con Google
+                    </a>
+                    """,
+                    unsafe_allow_html=True
+                )
+                # OJO: se necesita que el usuario haga clic manualmente en este link.
+
+
+if __name__ == "__main__":
+    main()
