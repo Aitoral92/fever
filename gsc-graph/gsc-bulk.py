@@ -278,7 +278,6 @@ def run_analysis_app():
     ], errors='ignore')
 
     # Ajustar formato de fechas en rplog
-    # Ajusta format='%B %d, %Y' si tu CSV viene con mes en texto
     rplog['DT_DATE_POSTING'] = pd.to_datetime(rplog['DT_DATE_POSTING'], errors='coerce')
     rplog['DT_DATE_POSTING'] = rplog['DT_DATE_POSTING'].dt.strftime('%Y-%m-%d')  # re-stringify en YYYY-mm-dd
 
@@ -315,7 +314,7 @@ def run_analysis_app():
         (rplog['DT_DATE_POSTING'] <= end_date_str)
     ]
 
-    # Expresión regular para extraer (por ejemplo) "/algo/" de la URL
+    # Expresión regular para extraer "/algo/" de la URL
     pattern = r"https?://[^/]+/([^/]+)/"
     rplog['URL_SHRT'] = rplog['CD_WPS_URL'].apply(
         lambda url: "/" + re.search(pattern, url).group(1) + "/" if re.search(pattern, url) else None
@@ -344,13 +343,9 @@ def run_analysis_app():
     # Dividir en trozos si la regex es muy larga (como hacías antes).
     regex_list = []
     if len(regex) > 8192:
-        # ...
-        # (Aquí tendrías tu lógica de trocear la string en 3 partes.)
-        pass
+        pass  # tu lógica extra para trocear en 3
     elif len(regex) > 4096:
-        # ...
-        # (Tu lógica de trocear en 2 partes.)
-        pass
+        pass  # tu lógica extra para trocear en 2
     else:
         regex_list.append(regex)
 
@@ -432,7 +427,9 @@ def run_analysis_app():
             'rowLimit': 25000,
             'startRow': 0
         }
-        response = webmasters_service.searchanalytics().query(siteUrl=website, body=body).execute()
+        response = webmasters_service.searchanalytics().query(
+            siteUrl=website, body=body
+        ).execute()
         rows = response.get('rows', [])
 
         if not rows:
@@ -463,18 +460,16 @@ def main():
     """
     Entry point de la app. Controla la lógica de autenticación:
      - Si el usuario ya está autenticado -> run_analysis_app()
-     - Si no, le muestra el botón/link para hacer login
+     - Si no, le muestra un botón para hacer login
      - Si Google redirige con ?code=... -> canjea el token y almacena en session_state
     """
     st.set_page_config(page_title="Análisis Search Console", layout="wide")
 
-    # Leer parámetros de la URL para ver si Google nos ha devuelto 'code'
-    query_params = st.query_params
+    query_params = st.query_params  # sin paréntesis (es una propiedad)
 
     # 1) Si ya tenemos credenciales en session_state, vamos directos a la app
     if "google_creds" in st.session_state:
         try:
-            # Verificar si las credenciales son válidas, etc.
             run_analysis_app()
             if st.button("Cerrar sesión"):
                 del st.session_state["google_creds"]
@@ -505,8 +500,16 @@ def main():
 
         else:
             st.title("Login con Google para Search Console")
-            auth_url = get_authorization_url()
-            st.markdown(f"[Haz clic aquí para iniciar sesión con Google]({auth_url})")
+
+            # En lugar de un link, usamos un BOTÓN que redirecciona en la misma pestaña
+            if st.button("Iniciar sesión con Google"):
+                # Obtenemos la URL de autorización
+                auth_url = get_authorization_url()
+
+                # Redireccionar en la MISMA pestaña mediante JavaScript
+                redirect_script = f"<script>window.location.href = '{auth_url}';</script>"
+                st.write(redirect_script, unsafe_allow_html=True)
+                st.stop()
 
 
 if __name__ == "__main__":
