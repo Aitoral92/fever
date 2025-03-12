@@ -503,25 +503,25 @@ def main():
                 except Exception as e:
                     st.error(f"Error al intercambiar code: {e}")
 
-            else:
-                st.title("Login con Google para Search Console")
-                auth_url = get_authorization_url()
-            
-                # Enlace HTML con target="_self" para que abra en la MISMA pestaña
-                st.markdown(
-                    f"""
-                    <a href="{auth_url}" target="_self"
-                       style="font-size:18px; font-weight:bold;
-                              text-decoration:none; background-color:#4CAF50;
-                              color:white; padding:10px; border-radius:5px;">
-                       Iniciar sesión con Google
-                    </a>
-                    """,
-                    unsafe_allow_html=True
-                )
-            
-                # Detenemos aquí para no seguir renderizando nada adicional
-                st.stop()
+        else:
+            st.title("Login con Google para Search Console")
+            auth_url = get_authorization_url()
+        
+            # Enlace HTML con target="_self" para que abra en la MISMA pestaña
+            st.markdown(
+                f"""
+                <a href="{auth_url}" target="_self"
+                   style="font-size:18px; font-weight:bold;
+                          text-decoration:none; background-color:#4CAF50;
+                          color:white; padding:10px; border-radius:5px;">
+                   Iniciar sesión con Google
+                </a>
+                """,
+                unsafe_allow_html=True
+            )
+        
+            # Detenemos aquí para no seguir renderizando nada adicional
+            st.stop()
 
 
 
