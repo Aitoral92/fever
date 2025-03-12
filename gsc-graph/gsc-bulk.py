@@ -505,7 +505,11 @@ def main():
 
         else:
             st.title("Login con Google para Search Console")
+            # 1) Generar la URL de autenticación
             auth_url = get_authorization_url()
+        
+            # 2) Mostrarla en pantalla para que puedas copiarla
+            st.write("URL de autorización generada:", auth_url)
         
             # Enlace HTML con target="_self" para que abra en la MISMA pestaña
             st.markdown(
