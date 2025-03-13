@@ -22,7 +22,7 @@ client_secret_json = st.secrets["GCP"]["CLIENT_SECRET_JSON"]
 client_config = json.loads(client_secret_json)["web"]
 
 # Ajusta con la URL real de tu aplicación (la misma que diste en Google Cloud Console)
-REDIRECT_URI = "https://gsc-bulk-analysis.streamlit.app"
+REDIRECT_URI = "https://gsc-bulk-analysis.streamlit.app/"
 
 
 def get_authorization_url():
