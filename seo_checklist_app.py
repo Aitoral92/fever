@@ -729,6 +729,8 @@ def main():
                 # soup = BeautifulSoup(get_url.text, "html.parser")                       
     
                 cta_count,cta_list = check_cta(soup)
+                cta_count = cta_count or 0
+                cta_list = cta_list or []
                 if cta_count > 0:
                     st.success(f"There is a CTA: {cta_list}", icon="✅")
                     # st.info(f"That means that from the {art_ucount} links, one is the CTA.", icon="👀")
