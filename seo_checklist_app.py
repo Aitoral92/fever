@@ -244,7 +244,7 @@ def check_cta(soup):
     try:
         all_content_cta = soup.find_all("div", class_="smn-tracklink-cta")
         if not all_content_cta:
-            st.warning("There is no final CTA.", icon="⚠️")
+            # st.warning("There is no final CTA.", icon="⚠️")
             return 0, []
 
         all_content_last_cta = all_content_cta[-1]
