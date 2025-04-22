@@ -238,21 +238,23 @@ def feverup_plans_check (soup, art_count):
     return feverup_count, feverup_percentage, exp_plans
 
 def check_cta(soup):
-    # # Create a copy of soup so it does not interfare with internal links count
-    # soup_copy = BeautifulSoup(str(soup), "html.parser")
-    
     all_content_cta = soup.find_all("div", class_="smn-tracklink-cta")
-    all_content_last_cta = all_content_cta[-1]
 
     cta_count = 0
     cta_list = []
+
     try:
+        all_content_last_cta = all_content_cta[-1]  # Esto puede fallar si no hay CTA
         for a in all_content_last_cta.find_all('a', href=True):
             cta_count += 1
             cta_list.append(a['href'])
+    except IndexError:
+        # No hay ningún CTA en el contenido
+        st.warning("There is no final CTA.", icon="⚠️")
     except AttributeError:
-        cta_count = 0
-        cta_list = []
+        # El último CTA no tiene enlaces válidos
+        st.warning("Final CTA found but has no valid <a> tags.", icon="⚠️")
+
     return cta_count, cta_list
 
 def get_categories_count(soup):
