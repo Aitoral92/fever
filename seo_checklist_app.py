@@ -693,6 +693,7 @@ def main():
                     st.warning(f"There are some expired Fever plans linked in the article, please remove or substitute them. Here the expired plans:\n Here are the links: {exp_plans}.", icon="⚠️")
             else:
                     st.info(f"There are no Fever plans linked in the article.", icon="👀")
+            total = 0  # Previene el error si nunca se calcula más abajo
             if cta_count > 0:
                 total = art_ucount - cta_count
                 if total == 0:
