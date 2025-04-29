@@ -1,0 +1,23 @@
+{
+    "python.testing.unittestArgs": [
+        "-v",
+        "-s",
+        ".",
+        "-p",
+        "*test.py"
+    ],
+    "python.testing.pytestEnabled": true,
+    "python.testing.unittestEnabled": false,
+    "extensions": [
+        "sneppets.seo-tools",
+        "url-analysis.url-analysis",
+        "scraping-tools.scraping-tools",
+        "streetsidesoftware.code-spell-checker",
+        "esbenp.prettier-vscode",
+        "ms-python.python",
+        "ms-toolsai.jupyter",
+        "seo.lighthouse",
+        "seo.seo-checker",
+        "seo.seo-helper"
+    ]
+}
